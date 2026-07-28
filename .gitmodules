@@ -1,0 +1,6 @@
+[submodule "Core"]
+	path = Core
+	url  = ../LibraryTemplate.git
+[submodule "WpfControl"]
+	path = WpfControl
+	url  = ../../takahiro-itou/WpfControlLibrary.git

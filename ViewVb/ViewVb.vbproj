@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <OutputType>WinExe</OutputType>
+    <Platforms>x64;x86</Platforms>
+    <RootNamespace>ViewVb</RootNamespace>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <Import Project="..\Props\OutputApps.props" />
+
+  <ItemGroup>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cli.Net8\Wrapper.Net80.vcxproj" />
+    <ProjectReference Include="..\WpfControl\WpfControl.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="MainWindow.xaml.vb" />
+    <Compile Include="MySampleModel.vb" />
+  </ItemGroup>
+
+</Project>
