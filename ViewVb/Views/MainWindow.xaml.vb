@@ -11,8 +11,22 @@ Public Sub New()
 ''    コンストラクタ
 ''--------------------------------------------------------------------
     InitializeComponent()
-    Me.m_model = New Models.MySampleModel()
-    SampleControl1.ViewModel = New WpfControl.Sample.SampleViewModel(m_model)
+End Sub
+
+
+Private Sub mnuFileExit_Click(ByVal sender As Object, ByVal e As EventArgs)
+''--------------------------------------------------------------------
+''    メニュー「ファイル」－「終了」
+''--------------------------------------------------------------------
+    System.Windows.Application.Current.Shutdown()
+End Sub
+
+
+Private Sub mnuRunCommand_Click(sender As Object, e As EventArgs)
+''--------------------------------------------------------------------
+''    メニュー「実行」－「コマンドを実行」
+''--------------------------------------------------------------------
+    runCommand()
 End Sub
 
 
