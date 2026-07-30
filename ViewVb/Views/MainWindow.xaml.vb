@@ -1,4 +1,7 @@
 ﻿
+Namespace Global.ViewVb.Views
+
+
 Public Class MainWindow
 
 Private m_model As MySampleModel
@@ -14,3 +17,5 @@ End Sub
 
 
 End Class
+
+End Namespace
