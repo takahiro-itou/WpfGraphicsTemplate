@@ -27,6 +27,7 @@
   <ItemGroup>
     <Compile Include="Models/MySampleModel.vb" />
     <Compile Include="Views/MainWindow.xaml.vb" />
+    <Compile Include="WinAPI.vb" />
   </ItemGroup>
 
 </Project>
