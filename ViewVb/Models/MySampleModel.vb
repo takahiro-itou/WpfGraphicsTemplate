@@ -1,6 +1,9 @@
 
 Imports WpfControl.Sample
 
+
+Namespace Global.ViewVb.Models
+
 Public Class MySampleModel
         Inherits WpfControl.Sample.AbstractSampleModel
 
@@ -33,3 +36,5 @@ End Sub
 
 
 End Class
+
+End Namespace
