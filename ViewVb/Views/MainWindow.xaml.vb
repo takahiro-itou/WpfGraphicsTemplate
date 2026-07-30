@@ -1,6 +1,9 @@
 ﻿
-Namespace Global.ViewVb.Views
+Imports System.Windows
+Imports System.Windows.Media.Imaging
 
+
+Namespace Global.ViewVb.Views
 
 Public Class MainWindow
 
