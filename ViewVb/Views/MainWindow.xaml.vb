@@ -31,7 +31,7 @@ Dim wrapImg As SampleWrapper.Images.FullColorImage
 
     imgCanvas.Lock()
     ptrBuf = imgCanvas.BackBuffer
-    wrapImg.createImage(300, 300, 4, imgCanvas.BackBufferStride ptrBuf)
+    wrapImg.createImage(300, 300, 4, imgCanvas.BackBufferStride, ptrBuf)
 
     wrapImg.drawSample()
     imgCanvas.Unlock()
