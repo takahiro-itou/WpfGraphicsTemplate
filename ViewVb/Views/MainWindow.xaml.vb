@@ -34,6 +34,7 @@ Dim wrapImg As SampleWrapper.Images.FullColorImage
     wrapImg.createImage(300, 300, 4, imgCanvas.BackBufferStride, ptrBuf)
 
     wrapImg.drawSample()
+    imgCanvas.AddDirtyRect(new Int32Rect(0, 0, 300, 300))
     imgCanvas.Unlock()
 
     picView.Source = imgCanvas
