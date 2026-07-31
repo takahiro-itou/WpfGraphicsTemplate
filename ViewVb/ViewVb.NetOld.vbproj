@@ -15,6 +15,10 @@
   <Import Project="..\Props\OutputApps.props" />
 
   <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="10.0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
@@ -27,6 +31,7 @@
   <ItemGroup>
     <Compile Include="Models/MySampleModel.vb" />
     <Compile Include="Views/MainWindow.xaml.vb" />
+    <Compile Include="WinAPI.vb" />
   </ItemGroup>
 
 </Project>

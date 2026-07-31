@@ -8,14 +8,27 @@
     xmlns:WpfControl="clr-namespace:WpfControl;assembly=WpfControl"
     xmlns:WpfControl.Sample="clr-namespace:WpfControl.Sample;assembly=WpfControl"
     Title="MainWindow"
-    Height="448" Width="384"
+    Height="512" Width="440"
 >
-  <StackPanel Orientation="Vertical">
-    <WpfControl.Sample:SampleControl
-        x:Name="SampleControl1"
-        Height="112"
-        Margin="16,8,16,8"
-    />
-  </StackPanel>
+  <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="Bool2Visible" />
+  </Window.Resources>
+
+  <DockPanel>
+    <Menu DockPanel.Dock="Top">
+      <MenuItem Header="_File">
+        <MenuItem Header="E_xit" Click="mnuFileExit_Click" />
+      </MenuItem>
+      <MenuItem Header="_Run">
+        <MenuItem Header="Run _Command"
+          Click="mnuRunCommand_Click" />
+        />
+      </MenuItem>
+    </Menu>
+
+    <StackPanel Orientation="Vertical">
+      <Image x:Name="picView" Stretch="None" />
+    </StackPanel>
+  </DockPanel>
 
 </Window>
