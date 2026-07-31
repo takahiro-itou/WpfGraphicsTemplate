@@ -3,7 +3,7 @@
 **                                                                      **
 **                  ---   Graphics Test Project.   ---                  **
 **                                                                      **
-**          Copyright (C), 2025-2025, Takahiro Itou                     **
+**          Copyright (C), 2025-2026, Takahiro Itou                     **
 **          All Rights Reserved.                                        **
 **                                                                      **
 **          License: (See COPYING or LICENSE files)                     **
@@ -105,6 +105,23 @@ public:
             const  int  cbPixel,
             const  int  lStride,
             void  *     lpBits);
+
+    //----------------------------------------------------------------
+    /**   イメージを作成する。
+    **
+    **  @param [in] nWidth    イメージの幅
+    **  @param [in] nHeight   イメージの高さ
+    **  @param [in] cbPixel   ピクセル当たりのバイト数。
+    **  @param [in] lStride   行当たりのバイト数。
+    **  @param [in] lpBits    イメージデータ。
+    **/
+    virtual  void
+    createImage(
+            const  int  nWidth,
+            const  int  nHeight,
+            const  int  cbPixel,
+            const  int  lStride,
+            IntPtr      lpBits);
 
     //----------------------------------------------------------------
     /**   サンプル画像を描画する。

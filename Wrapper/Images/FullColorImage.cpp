@@ -3,7 +3,7 @@
 **                                                                      **
 **                  ---   Graphics Test Project.   ---                  **
 **                                                                      **
-**          Copyright (C), 2025-2025, Takahiro Itou                     **
+**          Copyright (C), 2025-2026, Takahiro Itou                     **
 **          All Rights Reserved.                                        **
 **                                                                      **
 **          License: (See COPYING or LICENSE files)                     **
@@ -109,6 +109,23 @@ FullColorImage::createImage(
 {
     return  this->m_ptrObj->createImage(
                 nWidth, nHeight, cbPixel, lStride, lpBits
+    );
+}
+
+//----------------------------------------------------------------
+//    イメージを作成する。
+//
+
+void
+FullColorImage::createImage(
+        const  int  nWidth,
+        const  int  nHeight,
+        const  int  cbPixel,
+        const  int  lStride,
+        IntPtr      lpBits)
+{
+    return  this->m_ptrObj->createImage(
+                nWidth, nHeight, cbPixel, lStride, lpBits.ToPointer()
     );
 }
 
