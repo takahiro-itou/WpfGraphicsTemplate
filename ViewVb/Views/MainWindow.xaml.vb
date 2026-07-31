@@ -26,7 +26,7 @@ Dim ptrBuf As IntPtr
 Dim wrapImg As SampleWrapper.Images.FullColorImage
 
     imgCanvas = New WriteableBitmap(
-            300, 300, 96, 96, Media.PixelFormats.Pbgr32 Nothing)
+            300, 300, 96, 96, Media.PixelFormats.Pbgr32, Nothing)
     wrapImg = New SampleWrapper.Images.FullColorImage()
 
     imgCanvas.Lock()
