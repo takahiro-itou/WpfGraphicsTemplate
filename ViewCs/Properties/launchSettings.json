@@ -1,0 +1,8 @@
+{
+  "profiles" : {
+    "ViewCs" : {
+      "commandName" : "Project",
+      "nativeDebugging" : true
+    }
+  }
+}
