@@ -3,7 +3,8 @@ using System.Windows;
 
 using WpfControl.Sample;
 
-namespace  ViewCs  {
+
+namespace  ViewCs.Models  {
 
 public  class  MySampleModel : WpfControl.Sample.AbstractSampleModel
 {
@@ -46,4 +47,4 @@ public  class  MySampleModel : WpfControl.Sample.AbstractSampleModel
 
 }
 
-}   //  End of namespace  ViewCs
+}   //  End of namespace  ViewCs.Models

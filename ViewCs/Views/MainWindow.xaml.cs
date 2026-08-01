@@ -1,7 +1,9 @@
 ﻿
 using System.Windows;
+using System.Windows.Media.Imaging;
 
-namespace  ViewCs  {
+
+namespace  ViewCs.Views  {
 
 public  partial class  MainWindow : Window
 {
@@ -21,4 +23,4 @@ public  partial class  MainWindow : Window
     private MySampleModel   m_model;
 }
 
-}   //  End of namespace  ViewCs
+}   //  End of namespace  ViewCs.Views
