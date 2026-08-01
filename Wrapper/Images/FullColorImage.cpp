@@ -134,9 +134,14 @@ FullColorImage::createImage(
 //
 
 void
-FullColorImage::drawSample()
+FullColorImage::drawSample(
+        const  ColorArgb32  colBG,
+        const  ColorArgb32  colTL,
+        const  ColorArgb32  colTR,
+        const  ColorArgb32  colBL,
+        const  ColorArgb32  colBR)
 {
-    return  this->m_ptrObj->drawSample();
+    return  this->m_ptrObj->drawSample(colBG, colTL, colTR, colBL, colBR);
 }
 
 //========================================================================
