@@ -1,12 +1,24 @@
-﻿// This is the main DLL file.
+﻿//  -*-  coding: utf-8-with-signature;  mode: c++  -*-  //
+/*************************************************************************
+**                                                                      **
+**                  ---   Graphics Test Project.   ---                  **
+**                                                                      **
+**          Copyright (C), 2025-2026, Takahiro Itou                     **
+**          All Rights Reserved.                                        **
+**                                                                      **
+**          License: (See COPYING or LICENSE files)                     **
+**          GNU Affero General Public License (AGPL) version 3,         **
+**          or (at your option) any later version.                      **
+**                                                                      **
+*************************************************************************/
 
-#include "stdafx.h"
+#include    "PreCompile.h"
 
-#include <msclr/marshal_cppstd.h>
+#include    <msclr/marshal_cppstd.h>
 
-#include "Wrapper.h"
+#include    "Wrapper.h"
 
-#include <string>
+#include    <string>
 
 namespace  SampleWrapper  {
 namespace  Common  {
