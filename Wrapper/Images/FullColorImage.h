@@ -40,6 +40,13 @@ public ref  class  FullColorImage
 //
 //    Internal Type Definitions.
 //
+private:
+
+    typedef     Sample::Images::FullColorImage  WrapTarget;
+
+public:
+
+    typedef     WrapTarget::ColorArgb32         ColorArgb32;
 
 //========================================================================
 //
@@ -128,7 +135,12 @@ public:
     **
     **/
     virtual  void
-    drawSample();
+    drawSample(
+            const  ColorArgb32  colBG,
+            const  ColorArgb32  colTL,
+            const  ColorArgb32  colTR,
+            const  ColorArgb32  colBL,
+            const  ColorArgb32  colBR);
 
 //========================================================================
 //
@@ -168,10 +180,8 @@ public:
 //    Member Variables.
 //
 private:
-
-    typedef     Sample::Images::FullColorImage  WrapTarget;
-
     WrapTarget  *   m_ptrObj;
+
 };
 
 }   //  End of namespace  Common
