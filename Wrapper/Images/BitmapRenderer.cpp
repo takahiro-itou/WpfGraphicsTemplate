@@ -3,7 +3,7 @@
 **                                                                      **
 **                  ---   Graphics Test Project.   ---                  **
 **                                                                      **
-**          Copyright (C), 2025-2025, Takahiro Itou                     **
+**          Copyright (C), 2025-2026, Takahiro Itou                     **
 **          All Rights Reserved.                                        **
 **                                                                      **
 **          License: (See COPYING or LICENSE files)                     **
@@ -18,9 +18,9 @@
 **      @file       Images/BitmapRenderer.cpp
 **/
 
-#include "StdAfx.h"
+#include    "PreCompile.h"
 
-#include "BitmapRenderer.h"
+#include    "BitmapRenderer.h"
 
 
 namespace  SampleWrapper  {

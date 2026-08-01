@@ -18,9 +18,9 @@
 **      @file       Images/FullColorImage.cpp
 **/
 
-#include "StdAfx.h"
+#include    "PreCompile.h"
 
-#include "FullColorImage.h"
+#include    "FullColorImage.h"
 
 
 namespace  SampleWrapper  {
