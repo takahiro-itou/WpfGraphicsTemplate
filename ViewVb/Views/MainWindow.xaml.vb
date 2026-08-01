@@ -16,6 +16,7 @@ Public Sub New()
 ''--------------------------------------------------------------------
 ''    コンストラクタ
 ''--------------------------------------------------------------------
+Dim ptrBuf As IntPtr
 Dim imgCanvas As System.Windows.Media.Imaging.WriteableBitmap
 
     InitializeComponent()
@@ -41,7 +42,6 @@ Private Sub runCommand()
 ''--------------------------------------------------------------------
 ''    指定したコマンドを実行する。
 ''--------------------------------------------------------------------
-Dim ptrBuf As IntPtr
 Dim colBG As Integer
 Dim colTL As Integer
 Dim colTR As Integer
@@ -60,7 +60,7 @@ Dim rnd As New Random()
 
     With Me.m_imgCanvas
         .Lock()
-        wrapImg.drawSample(colBG, colTL, colTR, colBL, colBR)
+        Me.m_wrapImg.drawSample(colBG, colTL, colTR, colBL, colBR)
         .AddDirtyRect(new Int32Rect(0, 0, 300, 300))
         .Unlock()
     End With
