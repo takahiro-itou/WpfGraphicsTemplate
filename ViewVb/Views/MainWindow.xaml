@@ -21,7 +21,7 @@
       </MenuItem>
       <MenuItem Header="_Bitmap">
         <MenuItem Header="_Draw" Click="mnuRunCommand_Click" />
-        <MenuItem Header"_Clear" />
+        <MenuItem Header="_Clear" />
       </MenuItem>
     </Menu>
 
