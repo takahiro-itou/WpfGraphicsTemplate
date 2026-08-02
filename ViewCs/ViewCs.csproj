@@ -21,8 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Models/MySampleModel.cs" />
-    <Compile Include="Views/MainWindow.xaml.cs" />
+    <Compile Include="Commands\SimpleCommand.cs" />
+    <Compile Include="Models\MySampleModel.cs" />
+    <Compile Include="ViewModels\SampleViewModel.cs" />
+    <Compile Include="Views\MainWindow.xaml.cs" />
   </ItemGroup>
 
 </Project>
