@@ -74,6 +74,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>PreCompile.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <AdditionalDependencies>
@@ -84,7 +85,7 @@
 
   <ItemGroup>
     <ClInclude Include="..\Wrapper\resource.h" />
-    <ClInclude Include="..\Wrapper\Stdafx.h" />
+    <ClInclude Include="..\Wrapper\PreCompile.h" />
     <ClInclude Include="..\Wrapper\Wrapper.h" />
     <ClInclude Include="..\Wrapper\Images\BitmapRenderer.h" />
     <ClInclude Include="..\Wrapper\Images\FullColorImage.h" />
@@ -93,11 +94,8 @@
   <ItemGroup>
     <ClCompile Include="..\Wrapper\AssemblyInfo.cpp" />
     <ClCompile Include="..\Wrapper\Images\FullColorImage.cpp" />
-    <ClCompile Include="..\Wrapper\Stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    <ClCompile Include="..\Wrapper\PreCompile.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Wrapper\Wrapper.cpp" />
   </ItemGroup>

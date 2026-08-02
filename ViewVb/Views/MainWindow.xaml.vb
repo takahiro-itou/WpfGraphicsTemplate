@@ -55,7 +55,8 @@ Dim rnd As New Random()
     ' 色を適当に決める。
     colTL = rnd.Next(256) OR &HFF000080
     colTR = (rnd.Next(256) * 256) OR &HFF008000
-    colBL = rnd.Next(65536) OR &HFF008080
+    colBL = rnd.Next(256)
+    colBL = (colBL * 257) OR &HFF008080
     colBR = (rnd.Next(256) * 65536) OR &HFF800000
 
     With Me.m_imgCanvas
