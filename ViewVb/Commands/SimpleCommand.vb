@@ -1,4 +1,4 @@
-﻿''  -*-  coding: utf-8-with-signature;  mode: c++  -*-  ''
+﻿''  -*-  coding: utf-8-with-signature  -*-  ''
 ''************************************************************************
 ''                                                                      ''
 ''                  ---   Graphics Test Project.   ---                  ''
