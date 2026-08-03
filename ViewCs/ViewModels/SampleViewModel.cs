@@ -30,8 +30,7 @@ public  class  SampleViewModel
     /**   コンストラクタ。
     **
     **/
-    public SampleViewModel(
-            SampleModel model)
+    public SampleViewModel()
     {
     }
 
