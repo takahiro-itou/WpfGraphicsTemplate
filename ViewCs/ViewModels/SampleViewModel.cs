@@ -12,10 +12,52 @@
 **                                                                      **
 *************************************************************************/
 
-using System.Windows;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 
 namespace  ViewCs.ViewModels  {
 
+public  class  SampleViewModel
+{
+
+//========================================================================
+//
+//    Constructor(s) and Destructor.
+//
+
+    //----------------------------------------------------------------
+    /**   コンストラクタ。
+    **
+    **/
+    public SampleViewModel(
+            SampleModel model)
+    {
+    }
+
+//========================================================================
+//
+//    Public Properties.
+//
+
+
+//========================================================================
+//
+//    Public Member Functions.
+//
+
+
+//========================================================================
+//
+//    Protected Member Functions.
+//
+
+
+//========================================================================
+//
+//    Member Variables.
+//
+
+}   //  End class  SampleViewModel
 
 }   //  End of namespace  ViewCs.ViewModels
