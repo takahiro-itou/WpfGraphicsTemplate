@@ -26,6 +26,11 @@ Namespace Global.ViewVb.ViewModels
 Public Class SampleViewModel
         Implements INotifyPropertyChanged
 
+Private m_wrapImage As SampleWrapper.Images.FullColorImage
+Private m_imgCanvas As System.Windows.Media.Imaging.WriteableBitmap
+
+Private ReadOnly m_progress As System.IProgress(Of Integer)
+
 Private ReadOnly m_runModelTaskCommand As SimpleCommand
 
 Private m_isRunning As Boolean
@@ -35,6 +40,8 @@ Public Sub New()
 ''--------------------------------------------------------------------
 ''    コンストラクタ
 ''--------------------------------------------------------------------
+
+    Me.m_progress = New System.Progress(Of Integer)(AddressOf updateProgress)
 
     Me.m_runModelTaskCommand = New SimpleCommand(
         Sub(ByVal parameter As Object)
@@ -94,7 +101,19 @@ Public Overridable Async Sub runModelTaskAsync()
 ''--------------------------------------------------------------------
 ''    モデルのタスクを非同期で実行する。
 ''--------------------------------------------------------------------
+Dim result As Integer
+Dim myTask As Task(Of Integer)
 
+    Me.IsRunning  = True
+
+    mytask = Task.Run(Of Integer)(
+        Function() As Integer
+            Return  executeCommand(Me.m_progress)
+        End Function
+    )
+    result  = await mytask
+
+    Me.IsRunning  = False
 End Sub
 
 
@@ -129,6 +148,16 @@ Protected Overridable Sub updateProgress(
 ''--------------------------------------------------------------------
 
 End Sub
+
+
+Public Overridable Function executeCommand(
+        ByVal progress As IProgress(Of Integer) ) As Integer
+''--------------------------------------------------------------------
+''    モデルのタスクを実行する。
+''--------------------------------------------------------------------
+    progress.Report(100)
+    executeCommand = 0
+End Function
 
 
 End Class
