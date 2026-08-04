@@ -3,8 +3,9 @@
 
   <PropertyGroup>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Nullable>enable</Nullable>
     <OutputType>WinExe</OutputType>
-    <Platforms>x86;x64</Platforms>
+    <Platforms>x64;x86</Platforms>
     <RootNamespace>ViewCs</RootNamespace>
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
