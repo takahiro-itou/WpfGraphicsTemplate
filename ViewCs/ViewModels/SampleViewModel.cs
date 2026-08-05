@@ -14,6 +14,12 @@
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using System.Windows.Media;
+
+using ViewVb.Commands;
+using ViewVb.Models;
 
 
 namespace  ViewCs.ViewModels  {
@@ -32,6 +38,12 @@ public  class  SampleViewModel : INotifyPropertyChanged
 **/
 public SampleViewModel()
 {
+    this.m_runModelTaskCommand = new SimpleCommand(
+        _ => this.runModelTaskAsync(),
+        _ => this.canRunTask()
+    );
+
+    this.m_isRunning = false;
 }
 
 //========================================================================
@@ -92,6 +104,13 @@ canRunTask()
 public  virtual  async  void
 runModelTaskAsync()
 {
+    this.IsRunning  = true
+
+    Task<int>  task = Task.Run<int>(
+        () => this.executeCommand(this.m_progress));
+    int  result = await task;
+
+    this.IsRunning  = false;
 }
 
 
@@ -130,14 +149,34 @@ updateProgress(int progressValue)
 {
 }
 
+//----------------------------------------------------------------
+/**   モデルのタスクを実行する。
+**
+**/
+
+public  virtual  int
+executeCommand(
+    IProgress<int>  progress)
+{
+    progress.Report(100)
+    return ( 0 );
+}
+
+
 //========================================================================
 //
 //    Member Variables.
 //
 
-private  readonly   SimpleCommand           m_runModelTaskCommand;
+private  SampleWrapper.Images.FullColorImage    m_wrapImage;
+private  Imaging.WriteableBitmap                m_imgCanvas;
+
+private  readonly   System.IProgress<int>       m_progress;
+
+private  readonly   SimpleCommand               m_runModelTaskCommand;
 
 private  bool   m_isRunning;
+
 
 }   //  End class  SampleViewModel
 
