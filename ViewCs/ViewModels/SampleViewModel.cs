@@ -16,7 +16,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 using ViewCs.Commands;
 using ViewCs.Models;
@@ -156,7 +156,7 @@ updateProgress(int progressValue)
 
 public  virtual  int
 executeCommand(
-    IProgress<int>  progress)
+        System.IProgress<int>   progress)
 {
     progress.Report(100);
     return ( 0 );
@@ -169,7 +169,7 @@ executeCommand(
 //
 
 private  SampleWrapper.Images.FullColorImage    m_wrapImage;
-private  Imaging.WriteableBitmap                m_imgCanvas;
+private  WriteableBitmap                        m_imgCanvas;
 
 private  readonly   System.IProgress<int>       m_progress;
 
