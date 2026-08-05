@@ -100,6 +100,13 @@ Public Overridable ReadOnly Property RunModelTaskCommand() As ICommand
 End Property
 
 
+Public Overridable Readonly Property SourceBitmap() As Imaging.WriteableBitmap
+    Get
+        Return  Me.m_imgCanvas
+    End Get
+End Property
+
+
 ''======================================================================
 ''
 ''    Public Member Functions.

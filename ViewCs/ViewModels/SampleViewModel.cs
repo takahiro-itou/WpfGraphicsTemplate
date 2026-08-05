@@ -99,6 +99,16 @@ RunModelTaskCommand {
 }
 
 
+//----------------------------------------------------------------
+/**
+**
+**/
+public  virtual  WriteableBitmap
+SourceBitmap {
+    get { return  this.m_imgCanvas; }
+}
+
+
 //========================================================================
 //
 //    Public Member Functions.
