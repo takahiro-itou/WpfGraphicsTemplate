@@ -18,7 +18,7 @@ using System.Runtime.CompilerServices;
 
 namespace  ViewCs.ViewModels  {
 
-public  class  SampleViewModel
+public  class  SampleViewModel : INotifyPropertyChanged
 {
 
 //========================================================================
@@ -26,18 +26,48 @@ public  class  SampleViewModel
 //    Constructor(s) and Destructor.
 //
 
-    //----------------------------------------------------------------
-    /**   コンストラクタ。
-    **
-    **/
-    public SampleViewModel()
-    {
-    }
+//----------------------------------------------------------------
+/**   コンストラクタ。
+**
+**/
+public SampleViewModel()
+{
+}
 
 //========================================================================
 //
-//    Public Properties.
+//    Properties.
 //
+
+//----------------------------------------------------------------
+/**
+**
+**/
+public  event PropertyChangedEventHandler?  PropertyChanged;
+
+
+//----------------------------------------------------------------
+/**
+**
+**/
+public  bool
+IsRunning  {
+    get { return  this.m_isRunning; }
+    private set {
+        this.m_isRunning = value;
+        raisePropertyChanged();
+        raiseCanExecuteChanged();
+    }
+}
+
+//----------------------------------------------------------------
+/**   タスクを実行するコマンドを取得するプロパティ。
+**
+**/
+public  virtual  ICommand
+RunModelTaskCommand {
+    get { return  this.m_runModelTaskCommand; }
+}
 
 
 //========================================================================
@@ -45,17 +75,69 @@ public  class  SampleViewModel
 //    Public Member Functions.
 //
 
+//----------------------------------------------------------------
+/**   タスクを実行可能か判定する。
+**
+**/
+public  virtual  bool
+canRunTask()
+{
+    return ( ! this.IsRunning );
+}
+
+//----------------------------------------------------------------
+/**   モデルのタスクを非同期で実行する。
+**
+**/
+public  virtual  async  void
+runModelTaskAsync()
+{
+}
+
 
 //========================================================================
 //
 //    Protected Member Functions.
 //
 
+//----------------------------------------------------------------
+/**
+**
+**/
+protected  virtual  void
+raiseCanExecuteChanged()
+{
+}
+
+//----------------------------------------------------------------
+/**
+**
+**/
+protected  virtual  void
+raisePropertyChanged(
+        [CallerMemberName]  System.String?  propertyName = null)
+{
+    PropertyChanged?.Invoke(
+            this, new PropertyChangedEventArgs(propertyName));
+}
+
+//----------------------------------------------------------------
+/**
+**
+**/
+protected  virtual  void
+updateProgress(int progressValue)
+{
+}
 
 //========================================================================
 //
 //    Member Variables.
 //
+
+private  readonly   SimpleCommand           m_runModelTaskCommand;
+
+private  bool   m_isRunning;
 
 }   //  End class  SampleViewModel
 
