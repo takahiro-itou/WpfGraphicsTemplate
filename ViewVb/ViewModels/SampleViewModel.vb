@@ -16,6 +16,7 @@ Imports System.ComponentModel
 Imports System.Runtime.CompilerServices
 Imports System.Threading.Tasks
 Imports System.Windows.Input
+Imports System.Windows.Media
 
 Imports ViewVb.Commands
 Imports ViewVb.Models
@@ -27,7 +28,7 @@ Public Class SampleViewModel
         Implements INotifyPropertyChanged
 
 Private m_wrapImage As SampleWrapper.Images.FullColorImage
-Private m_imgCanvas As System.Windows.Media.Imaging.WriteableBitmap
+Private m_imgCanvas As Imaging.WriteableBitmap
 
 Private ReadOnly m_progress As System.IProgress(Of Integer)
 
@@ -40,6 +41,21 @@ Public Sub New()
 ''--------------------------------------------------------------------
 ''    コンストラクタ
 ''--------------------------------------------------------------------
+Dim ptrBuf As IntPtr
+Dim imgCanvas As Imaging.WriteableBitmap
+
+    imgCanvas = New Imaging.WriteableBitmap(
+            300, 300, 96, 96, PixelFormats.Pbgra32, Nothing)
+    Me.m_wrapImage  = New Sample.Wrapper.Images.FullColorImage()
+
+    imgCanvas.Lock()
+    ptrBuf = imgCanvas.BackBuffer
+    Me.m_wrapImage.createImage(
+            300, 300,
+            (imgCanvas.Format.BitsPerPixel + 7) \ 8,
+            imgCanvas.BackBufferStride, ptrBuf)
+    imgCanvas.Unlock()
+    Me.m_imgCanvas = imgCanvas
 
     Me.m_progress = New System.Progress(Of Integer)(AddressOf updateProgress)
 
