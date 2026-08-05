@@ -38,13 +38,13 @@ public  class  SampleViewModel : INotifyPropertyChanged
 **/
 public SampleViewModel()
 {
-    IntPtr          ptrBuf;
-    WriteableBitmap imgCanvas;
+    System.IntPtr       ptrBuf;
+    WriteableBitmap     imgCanvas;
 
     imgCanvas = new WriteableBitmap(
             300, 300, 96, 96,
             System.Windows.Media.PixelFormats.Pbgra32, null);
-    m_wrapImage = new Sample.Wrapper.Images.FullColorImage();
+    m_wrapImage = new SampleWrapper.Images.FullColorImage();
 
     imgCanvas.Lock();
     ptrBuf  = imgCanvas.BackBuffer;
@@ -52,7 +52,7 @@ public SampleViewModel()
             300, 300,
             (imgCanvas.Format.BitsPerPixel + 7) / 8,
             imgCanvas.BackBufferStride, ptrBuf);
-    imgCanvas.Unlcok();
+    imgCanvas.Unlock();
     m_imgCanvas = imgCanvas;
 
     this.m_runModelTaskCommand = new SimpleCommand(
