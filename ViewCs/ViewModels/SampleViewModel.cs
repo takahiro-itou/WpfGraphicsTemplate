@@ -18,8 +18,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 
-using ViewVb.Commands;
-using ViewVb.Models;
+using ViewCs.Commands;
+using ViewCs.Models;
 
 
 namespace  ViewCs.ViewModels  {
@@ -104,7 +104,7 @@ canRunTask()
 public  virtual  async  void
 runModelTaskAsync()
 {
-    this.IsRunning  = true
+    this.IsRunning  = true;
 
     Task<int>  task = Task.Run<int>(
         () => this.executeCommand(this.m_progress));
@@ -158,7 +158,7 @@ public  virtual  int
 executeCommand(
     IProgress<int>  progress)
 {
-    progress.Report(100)
+    progress.Report(100);
     return ( 0 );
 }
 
