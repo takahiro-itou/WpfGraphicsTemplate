@@ -177,6 +177,30 @@ Public Overridable Function executeCommand(
 ''--------------------------------------------------------------------
 ''    モデルのタスクを実行する。
 ''--------------------------------------------------------------------
+Dim colBG As Integer
+Dim colTL As Integer
+Dim colTR As Integer
+Dim colBL As Integer
+Dim colBR As Integer
+Dim rnd As New Random()
+
+    ' 色を適当に決める。背景はある程度明るい色
+    colBG = rnd.Next(16777216) OR &HFF808080
+
+    ' 色を適当に決める。
+    colTL = rnd.Next(256) OR &HFF000080
+    colTR = (rnd.Next(256) * 256) OR &HFF008000
+    colBL = rnd.Next(256)
+    colBL = (colBL * 257) OR &HFF008080
+    colBR = (rnd.Next(256) * 65536) OR &HFF800000
+
+    With Me.m_imgCanvas
+        .Lock()
+        Me.m_wrapImage.drawSample(colBG, colTL, colTR, colBL, colBR)
+        .AddDirtyRect(new Int32Rect(0, 0, 300, 300))
+        .Unlock()
+    End With
+
     progress.Report(100)
     executeCommand = 0
 End Function
