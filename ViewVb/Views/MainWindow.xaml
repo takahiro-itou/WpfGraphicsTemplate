@@ -20,7 +20,9 @@
         <MenuItem Header="E_xit" Click="mnuFileExit_Click" />
       </MenuItem>
       <MenuItem Header="_Bitmap">
-        <MenuItem Header="_Draw" Click="mnuRunCommand_Click" />
+        <MenuItem Header="_Draw"
+            Command="{Binding RunModelTaskCommand}"
+        />
         <MenuItem Header="_Clear" />
       </MenuItem>
     </Menu>
