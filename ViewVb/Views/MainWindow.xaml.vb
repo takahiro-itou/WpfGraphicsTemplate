@@ -21,6 +21,7 @@ Namespace Global.ViewVb.Views
 Public Class MainWindow
 
 Private m_model As Models.MySampleModel
+Private m_viewModel As ViewModels.SampleViewModel
 
 Private m_imgCanvas As System.Windows.Media.Imaging.WriteableBitmap
 Private m_wrapImg As SampleWrapper.Images.FullColorImage
@@ -33,6 +34,10 @@ Dim ptrBuf As IntPtr
 Dim imgCanvas As System.Windows.Media.Imaging.WriteableBitmap
 
     InitializeComponent()
+
+    Me.m_viewModel  = New ViewModels.SampleViewModel()
+
+    Me.DataContext  = Me.m_viewModel
 
     imgCanvas = New WriteableBitmap(
             300, 300, 96, 96, Media.PixelFormats.Pbgra32, Nothing)
@@ -47,7 +52,7 @@ Dim imgCanvas As System.Windows.Media.Imaging.WriteableBitmap
     imgCanvas.Unlock()
 
     Me.m_imgCanvas = imgCanvas
-    Me.picView.Source = Me.m_imgCanvas
+    Me.picView.Source = Me.m_viewModel.SourceBitmap
 End Sub
 
 
