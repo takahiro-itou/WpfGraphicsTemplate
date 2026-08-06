@@ -205,7 +205,7 @@ executeCommand(
     colBR = (rnd.Next(256) << 16) | cAlpha | 0x00800000;
 
     this.m_imgCanvas.Lock();
-    this.m_wrapImg.drawSample(colBG, colTL, colTR, colBL, colBR);
+    this.m_wrapImage.drawSample(colBG, colTL, colTR, colBL, colBR);
     this.m_imgCanvas.AddDirtyRect(new Int32Rect(0, 0, 300, 300));
     this.m_imgCanvas.Unlock();
 
