@@ -46,7 +46,7 @@ Dim imgCanvas As Imaging.WriteableBitmap
 
     imgCanvas = New Imaging.WriteableBitmap(
             300, 300, 96, 96, PixelFormats.Pbgra32, Nothing)
-    Me.m_wrapImage  = New Sample.Wrapper.Images.FullColorImage()
+    Me.m_wrapImage  = New SampleWrapper.Images.FullColorImage()
 
     imgCanvas.Lock()
     ptrBuf = imgCanvas.BackBuffer
@@ -57,8 +57,6 @@ Dim imgCanvas As Imaging.WriteableBitmap
     imgCanvas.Unlock()
     Me.m_imgCanvas = imgCanvas
 
-    Me.m_progress = New System.Progress(Of Integer)(AddressOf updateProgress)
-
     Me.m_runModelTaskCommand = New SimpleCommand(
         Sub(ByVal parameter As Object)
             Me.runModelTaskAsync
@@ -68,6 +66,7 @@ Dim imgCanvas As Imaging.WriteableBitmap
         End Function
     )
 
+    Me.m_progress = New System.Progress(Of Integer)(AddressOf updateProgress)
     Me.m_isRunning  = False
 End Sub
 

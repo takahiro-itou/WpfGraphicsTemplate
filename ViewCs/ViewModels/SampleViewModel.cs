@@ -60,6 +60,7 @@ public SampleViewModel()
         _ => this.canRunTask()
     );
 
+    this.m_progress  = new System.Progress<int>(updateProgress);
     this.m_isRunning = false;
 }
 
