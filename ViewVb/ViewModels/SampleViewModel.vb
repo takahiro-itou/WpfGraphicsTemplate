@@ -15,8 +15,9 @@
 Imports System.ComponentModel
 Imports System.Runtime.CompilerServices
 Imports System.Threading.Tasks
+Imports System.Windows
 Imports System.Windows.Input
-Imports System.Windows.Media
+Imports System.Windows.Media.Imaging
 
 Imports ViewVb.Commands
 Imports ViewVb.Models
@@ -28,7 +29,7 @@ Public Class SampleViewModel
         Implements INotifyPropertyChanged
 
 Private m_wrapImage As SampleWrapper.Images.FullColorImage
-Private m_imgCanvas As Imaging.WriteableBitmap
+Private m_imgCanvas As WriteableBitmap
 
 Private ReadOnly m_progress As System.IProgress(Of Integer)
 
@@ -42,10 +43,10 @@ Public Sub New()
 ''    コンストラクタ
 ''--------------------------------------------------------------------
 Dim ptrBuf As IntPtr
-Dim imgCanvas As Imaging.WriteableBitmap
+Dim imgCanvas As WriteableBitmap
 
-    imgCanvas = New Imaging.WriteableBitmap(
-            300, 300, 96, 96, PixelFormats.Pbgra32, Nothing)
+    imgCanvas = New WriteableBitmap(
+            300, 300, 96, 96, Media.PixelFormats.Pbgra32, Nothing)
     Me.m_wrapImage  = New SampleWrapper.Images.FullColorImage()
 
     imgCanvas.Lock()
@@ -99,7 +100,7 @@ Public Overridable ReadOnly Property RunModelTaskCommand() As ICommand
 End Property
 
 
-Public Overridable Readonly Property SourceBitmap() As Imaging.WriteableBitmap
+Public Overridable Readonly Property SourceBitmap() As WriteableBitmap
     Get
         Return  Me.m_imgCanvas
     End Get
