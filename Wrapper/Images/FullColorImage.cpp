@@ -106,7 +106,7 @@ FullColorImage::allocateImage(
         const  int  cbPixel,
         const  int  lStride)
 {
-    return  this->m_ptrObj->allocateImage(nWidth, nHeight, cbPixel, lStride);
+    this->m_ptrObj->allocateImage(nWidth, nHeight, cbPixel, lStride);
 }
 
 //----------------------------------------------------------------
@@ -117,7 +117,7 @@ bool
 FullColorImage::canCopyBuffer(
         const  FullColorImage^  imgSrc)
 {
-    return  this->m_ptrObj->canCopyBuffer(imgSrc->m_ptrObj);
+    return  this->m_ptrObj->canCopyBuffer(*(imgSrc->m_ptrObj));
 }
 
 //----------------------------------------------------------------
@@ -128,7 +128,7 @@ void
 FullColorImage::copyImage(
         const  FullColorImage^  imgSrc)
 {
-    return  this->m_ptrObj->copyImage(imgSrc->m_ptrObj);
+    this->m_ptrObj->copyImage(*(imgSrc->m_ptrObj));
 }
 
 //----------------------------------------------------------------
@@ -143,7 +143,7 @@ FullColorImage::copyRectangle(
         const  int              x2,
         const  int              y2)
 {
-    return  this->m_ptrObj->copyRectangle(imgSrc->m_ptrObj, x1, y1, x2, y2);
+    this->m_ptrObj->copyRectangle(*(imgSrc->m_ptrObj), x1, y1, x2, y2);
 }
 
 //----------------------------------------------------------------
@@ -154,7 +154,7 @@ void
 FullColorImage::copyToBuffer(
         IntPtr  ptrDst)
 {
-    return  this->m_ptrObj->copyToBuffer(ptrDst.ToPointer());
+    this->m_ptrObj->copyToBuffer(ptrDst.ToPointer());
 }
 
 //----------------------------------------------------------------
@@ -165,7 +165,7 @@ void
 FullColorImage::copyToBuffer(
         void  * ptrDst)
 {
-    return  this->m_ptrObj->copyToBuffer(ptrDst);
+    this->m_ptrObj->copyToBuffer(ptrDst);
 }
 
 //----------------------------------------------------------------
