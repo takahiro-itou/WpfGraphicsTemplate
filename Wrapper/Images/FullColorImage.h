@@ -118,7 +118,7 @@ public:
     **/
     virtual  bool
     canCopyBuffer(
-            const  FullColorImage  &imgSrc)  const;
+            const  FullColorImage^  imgSrc)  const;
 
     //----------------------------------------------------------------
     /**   イメージをコピーする。
@@ -126,7 +126,7 @@ public:
     **/
     virtual  void
     copyImage(
-            const  FullColorImage  &imgSrc);
+            const  FullColorImage^  imgSrc);
 
     //----------------------------------------------------------------
     /**   イメージの指定範囲をコピーする。
@@ -134,11 +134,11 @@ public:
     **/
     virtual  void
     copyRectangle(
-            const  FullColorImage  &imgSrc,
-            const  PosUnitType      x1,
-            const  PosUnitType      y1,
-            const  PosUnitType      x2,
-            const  PosUnitType      y2);
+            const  FullColorImage^  imgSrc,
+            const  int              x1,
+            const  int              y1,
+            const  int              x2,
+            const  int              y2);
 
     //----------------------------------------------------------------
     /**   バッファの内容を単純にコピーする。
@@ -146,7 +146,7 @@ public:
     **/
     virtual  void
     copyToBuffer(
-            IntPtr      ptrDst)  const;
+            IntPtr  ptrDst);
 
     //----------------------------------------------------------------
     /**   バッファの内容を単純にコピーする。
@@ -154,7 +154,7 @@ public:
     **/
     virtual  void
     copyToBuffer(
-            void  *     ptrDst)  const;
+            void *  ptrDst);
 
     //----------------------------------------------------------------
     /**   イメージを作成する。
