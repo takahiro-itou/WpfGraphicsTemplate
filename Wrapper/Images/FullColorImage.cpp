@@ -217,6 +217,17 @@ FullColorImage::drawSample(
     return  this->m_ptrObj->drawSample(colBG, colTL, colTR, colBL, colBR);
 }
 
+//----------------------------------------------------------------
+//    確保したバッファを解放する。
+//
+
+void
+FullColorImage::freeImageBuffer()
+{
+    this->m_ptrObj->freeImageBuffer();
+}
+
+
 //========================================================================
 //
 //    Public Member Functions.
