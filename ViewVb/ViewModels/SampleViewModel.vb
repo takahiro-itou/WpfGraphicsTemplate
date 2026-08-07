@@ -169,15 +169,6 @@ Protected Overridable Sub updateProgress(
 ''--------------------------------------------------------------------
 ''
 ''--------------------------------------------------------------------
-
-End Sub
-
-
-Public Overridable Function executeCommand(
-        ByVal progress As IProgress(Of Integer) ) As Integer
-''--------------------------------------------------------------------
-''    モデルのタスクを実行する。
-''--------------------------------------------------------------------
 Dim colBG As Integer
 Dim colTL As Integer
 Dim colTR As Integer
@@ -201,8 +192,21 @@ Dim rnd As New Random()
         .AddDirtyRect(new Int32Rect(0, 0, 300, 300))
         .Unlock()
     End With
+End Sub
 
-    progress.Report(100)
+
+Public Overridable Function executeCommand(
+        ByVal progress As IProgress(Of Integer) ) As Integer
+''--------------------------------------------------------------------
+''    モデルのタスクを実行する。
+''--------------------------------------------------------------------
+Dim i As Integer
+
+    For i = 1 To 100
+        progress.Report(i)
+        System.Threading.Thread.Sleep(10)
+    Next i
+
     executeCommand = 0
 End Function
 

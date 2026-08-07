@@ -178,17 +178,6 @@ raisePropertyChanged(
 protected  virtual  void
 updateProgress(int progressValue)
 {
-}
-
-//----------------------------------------------------------------
-/**   モデルのタスクを実行する。
-**
-**/
-
-public  virtual  int
-executeCommand(
-        System.IProgress<int>   progress)
-{
     int     cAlpha;
     int     colBG, colTL, colTR, colBL, colBR;
     System.Random   rnd = new System.Random();
@@ -208,8 +197,22 @@ executeCommand(
     this.m_wrapImage.drawSample(colBG, colTL, colTR, colBL, colBR);
     this.m_imgCanvas.AddDirtyRect(new Int32Rect(0, 0, 300, 300));
     this.m_imgCanvas.Unlock();
+}
 
-    progress.Report(100);
+//----------------------------------------------------------------
+/**   モデルのタスクを実行する。
+**
+**/
+
+public  virtual  int
+executeCommand(
+        System.IProgress<int>   progress)
+{
+    for ( int i = 1; i <= 100; ++ i ) {
+        progress.Report(i);
+        System.Threading.Thread.Sleep(10);
+    }
+
     return ( 0 );
 }
 
