@@ -32,7 +32,6 @@ public  partial class  MainWindow : Window
 
         this.m_viewModel = new ViewModels.SampleViewModel();
         this.DataContext = this.m_viewModel;
-        this.picView.Source = this.m_viewModel.SourceBitmap;
     }
 
     //----------------------------------------------------------------

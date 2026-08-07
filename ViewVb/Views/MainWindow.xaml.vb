@@ -28,14 +28,10 @@ Public Sub New()
 ''--------------------------------------------------------------------
 ''    コンストラクタ
 ''--------------------------------------------------------------------
-Dim ptrBuf As IntPtr
-Dim imgCanvas As System.Windows.Media.Imaging.WriteableBitmap
-
     InitializeComponent()
 
     Me.m_viewModel  = New ViewModels.SampleViewModel()
     Me.DataContext  = Me.m_viewModel
-    Me.picView.Source = Me.m_viewModel.SourceBitmap
 End Sub
 
 
