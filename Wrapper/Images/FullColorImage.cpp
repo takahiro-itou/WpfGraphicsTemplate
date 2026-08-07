@@ -100,6 +100,79 @@ FullColorImage::!FullColorImage()
 //
 
 void
+FullColorImage::allocateImage(
+        const  int  nWidth,
+        const  int  nHeight,
+        const  int  cbPixel,
+        const  int  lStride)
+{
+    this->m_ptrObj->allocateImage(nWidth, nHeight, cbPixel, lStride);
+}
+
+//----------------------------------------------------------------
+//    バッファの単純コピーができるか確認する。
+//
+
+bool
+FullColorImage::canCopyBuffer(
+        const  FullColorImage^  imgSrc)
+{
+    return  this->m_ptrObj->canCopyBuffer(*(imgSrc->m_ptrObj));
+}
+
+//----------------------------------------------------------------
+//    イメージをコピーする。
+//
+
+void
+FullColorImage::copyImage(
+        const  FullColorImage^  imgSrc)
+{
+    this->m_ptrObj->copyImage(*(imgSrc->m_ptrObj));
+}
+
+//----------------------------------------------------------------
+//    イメージの指定範囲をコピーする。
+//
+
+void
+FullColorImage::copyRectangle(
+        const  FullColorImage^  imgSrc,
+        const  int              x1,
+        const  int              y1,
+        const  int              x2,
+        const  int              y2)
+{
+    this->m_ptrObj->copyRectangle(*(imgSrc->m_ptrObj), x1, y1, x2, y2);
+}
+
+//----------------------------------------------------------------
+//    バッファの内容を単純にコピーする。
+//
+
+void
+FullColorImage::copyToBuffer(
+        IntPtr  ptrDst)
+{
+    this->m_ptrObj->copyToBuffer(ptrDst.ToPointer());
+}
+
+//----------------------------------------------------------------
+//    バッファの内容を単純にコピーする。
+//
+
+void
+FullColorImage::copyToBuffer(
+        void  * ptrDst)
+{
+    this->m_ptrObj->copyToBuffer(ptrDst);
+}
+
+//----------------------------------------------------------------
+//    イメージを作成する。
+//
+
+void
 FullColorImage::createImage(
         const  int  nWidth,
         const  int  nHeight,
@@ -143,6 +216,17 @@ FullColorImage::drawSample(
 {
     return  this->m_ptrObj->drawSample(colBG, colTL, colTR, colBL, colBR);
 }
+
+//----------------------------------------------------------------
+//    確保したバッファを解放する。
+//
+
+void
+FullColorImage::freeImageBuffer()
+{
+    this->m_ptrObj->freeImageBuffer();
+}
+
 
 //========================================================================
 //
