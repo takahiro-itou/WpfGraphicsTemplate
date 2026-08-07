@@ -239,7 +239,7 @@ public:
     **
     **/
     inline  int
-    getBytesPerPixel()  const
+    getBytesPerPixel()
     {
         return  this->m_ptrObj->getBytesPerPixel();
     }
@@ -249,7 +249,7 @@ public:
     **
     **/
     inline  int
-    getHeight()  const
+    getHeight()
     {
         return  this->m_ptrObj->getHeight();
     }
@@ -259,7 +259,7 @@ public:
     **
     **/
     inline  int
-    getStride()  const
+    getStride()
     {
         return  this->m_ptrObj->getStride();
     }
@@ -269,7 +269,7 @@ public:
     **
     **/
     inline  int
-    getWidth()  const
+    getWidth()
     {
         return  this->m_ptrObj->getWidth();
     }
