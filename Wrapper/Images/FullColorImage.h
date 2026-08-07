@@ -146,7 +146,15 @@ public:
     **/
     virtual  void
     copyToBuffer(
-            LpWriteBuf  ptrDst)  const;
+            IntPtr      ptrDst)  const;
+
+    //----------------------------------------------------------------
+    /**   バッファの内容を単純にコピーする。
+    **
+    **/
+    virtual  void
+    copyToBuffer(
+            void  *     ptrDst)  const;
 
     //----------------------------------------------------------------
     /**   イメージを作成する。
