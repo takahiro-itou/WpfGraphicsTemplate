@@ -31,8 +31,8 @@ public  partial class  MainWindow : Window
         InitializeComponent();
 
         this.m_viewModel = new ViewModels.SampleViewModel();
-        this.DataContext = Me.m_viewModel;
-        this.picView.Source = imgCanvas;
+        this.DataContext = this.m_viewModel;
+        this.picView.Source = this.m_viewModel.SourceBitmap;
     }
 
     //----------------------------------------------------------------
