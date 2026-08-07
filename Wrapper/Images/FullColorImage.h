@@ -118,7 +118,7 @@ public:
     **/
     virtual  bool
     canCopyBuffer(
-            const  FullColorImage^  imgSrc)  const;
+            const  FullColorImage^  imgSrc);
 
     //----------------------------------------------------------------
     /**   イメージをコピーする。

@@ -115,7 +115,7 @@ FullColorImage::allocateImage(
 
 bool
 FullColorImage::canCopyBuffer(
-        const  FullColorImage^  imgSrc)  const
+        const  FullColorImage^  imgSrc)
 {
     return  this->m_ptrObj->canCopyBuffer(imgSrc->m_ptrObj);
 }
@@ -138,10 +138,10 @@ FullColorImage::copyImage(
 void
 FullColorImage::copyRectangle(
         const  FullColorImage^  imgSrc,
-        const  PosUnitType      x1,
-        const  PosUnitType      y1,
-        const  PosUnitType      x2,
-        const  PosUnitType      y2)
+        const  int              x1,
+        const  int              y1,
+        const  int              x2,
+        const  int              y2)
 {
     return  this->m_ptrObj->copyRectangle(imgSrc->m_ptrObj, x1, y1, x2, y2);
 }
