@@ -28,6 +28,7 @@ Namespace Global.ViewVb.ViewModels
 Public Class SampleViewModel
         Implements INotifyPropertyChanged
 
+Privare m_imgBuffer As SampleWrapper.Images.FullColorImage
 Private m_wrapImage As SampleWrapper.Images.FullColorImage
 Private m_imgCanvas As WriteableBitmap
 
@@ -48,6 +49,7 @@ Dim imgCanvas As WriteableBitmap
     imgCanvas = New WriteableBitmap(
             300, 300, 96, 96, Media.PixelFormats.Pbgra32, Nothing)
     Me.m_wrapImage  = New SampleWrapper.Images.FullColorImage()
+    Me.m_imgBuffer  = New SampleWrapper.Images.FullColorImage()
 
     imgCanvas.Lock()
     ptrBuf = imgCanvas.BackBuffer
@@ -57,6 +59,11 @@ Dim imgCanvas As WriteableBitmap
             imgCanvas.BackBufferStride, ptrBuf)
     imgCanvas.Unlock()
     Me.m_imgCanvas = imgCanvas
+
+    Me.m_imgBuffer.allocateImage(
+            300, 300,
+            (imgCanvas.Format.BitsPerPixel + 7) \ 8,
+            imgCanvas.BackBufferStride)
 
     Me.m_runModelTaskCommand = New SimpleCommand(
         Sub(ByVal parameter As Object)
@@ -167,7 +174,21 @@ End Sub
 Protected Overridable Sub updateProgress(
         ByVal progressValue As Integer)
 ''--------------------------------------------------------------------
-''
+''    バッファにある画像を画面上に転送する。
+''--------------------------------------------------------------------
+
+    With Me.m_imgCanvas
+        .Lock()
+        Me.m_wrapImage.copyImage(Me.m_imgBuffer)
+        .AddDirtyRect(new Int32Rect(0, 0, 300, 300))
+        .Unlock()
+    End With
+End Sub
+
+
+Protected Overridable Sub drawSampleImage()
+''--------------------------------------------------------------------
+''    サンプル画像を描画する。
 ''--------------------------------------------------------------------
 Dim colBG As Integer
 Dim colTL As Integer
@@ -177,21 +198,16 @@ Dim colBR As Integer
 Dim rnd As New Random()
 
     ' 色を適当に決める。背景はある程度明るい色
-    colBG = rnd.Next(16777216) OR &HFF808080
+    colBG = rnd.Next(16777216) Or &HFF808080
 
     ' 色を適当に決める。
-    colTL = rnd.Next(256) OR &HFF000080
+    colTL = rnd.Next(256) Or &HFF000080
     colTR = (rnd.Next(256) * 256) OR &HFF008000
     colBL = rnd.Next(256)
-    colBL = (colBL * 257) OR &HFF008080
+    colBL = (colBL * 257) Or &HFF008080
     colBR = (rnd.Next(256) * 65536) OR &HFF800000
 
-    With Me.m_imgCanvas
-        .Lock()
-        Me.m_wrapImage.drawSample(colBG, colTL, colTR, colBL, colBR)
-        .AddDirtyRect(new Int32Rect(0, 0, 300, 300))
-        .Unlock()
-    End With
+    Me.m_imgBuffer.drawSample(colBG, colTL, colTR, colBL, colBR)
 End Sub
 
 
@@ -203,6 +219,7 @@ Public Overridable Function executeCommand(
 Dim i As Integer
 
     For i = 1 To 100
+        drawSampleImage()
         progress.Report(i)
         System.Threading.Thread.Sleep(10)
     Next i
