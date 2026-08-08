@@ -38,6 +38,7 @@ MySampleModel(
     this.m_imgBuffer.allocateImage(nWidth, nHeight, cbPixel, lStride);
 }
 
+
 //========================================================================
 //
 //    Public Member Functions.

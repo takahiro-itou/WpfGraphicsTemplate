@@ -72,6 +72,7 @@ Dim rnd As New Random()
     Me.m_imgBuffer.drawSample(colBG, colTL, colTR, colBL, colBR)
 End Sub
 
+
 ''======================================================================
 ''
 ''    Properties.

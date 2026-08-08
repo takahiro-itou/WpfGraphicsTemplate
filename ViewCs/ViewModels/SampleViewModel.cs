@@ -41,28 +41,29 @@ public  class  SampleViewModel : INotifyPropertyChanged
 **/
 public SampleViewModel()
 {
+    const  int  nWidth  = 300;
+    const  int  nHeight = 300;
+    int         cbPixel = 4;
+    int         lStride = 0;
+
     System.IntPtr       ptrBuf;
     WriteableBitmap     imgCanvas;
 
     imgCanvas = new WriteableBitmap(
-            300, 300, 96, 96,
+            nWidth, nHeight, 96, 96,
             PixelFormats.Pbgra32, null);
     m_wrapImage = new SampleWrapper.Images.FullColorImage();
-    m_imgBuffer = new SampleWrapper.Images.FullColorImage();
 
     imgCanvas.Lock();
-    ptrBuf  = imgCanvas.BackBuffer;
-    this.m_wrapImage.createImage(
-            300, 300,
-            (imgCanvas.Format.BitsPerPixel + 7) / 8,
-            imgCanvas.BackBufferStride, ptrBuf);
-    imgCanvas.Unlock();
-    m_imgCanvas = imgCanvas;
+    cbPixel = (imgCanvas.Format.BitsPerPixel + 7) >> 3;
+    lStride = imgCanvas.BackBufferStride;
 
-    this.m_imgBuffer.allocateImage(
-            300, 300,
-            (imgCanvas.Format.BitsPerPixel + 7) / 8,
-            imgCanvas.BackBufferStride);
+    ptrBuf  = imgCanvas.BackBuffer;
+    this.m_wrapImage.createImage(nWidth, nHeight, cbPixel, lStride, ptrBuf);
+    imgCanvas.Unlock();
+
+    this.m_imgCanvas = imgCanvas;
+    this.m_trgModel = new MySampleModel(nWidth, nHeight, cbPixel, lStride);
 
     this.m_runModelTaskCommand = new SimpleCommand(
         _ => this.runModelTaskAsync(),
@@ -185,7 +186,7 @@ protected  virtual  void
 updateProgress(int progressValue)
 {
     this.m_imgCanvas.Lock();
-    this.m_wrapImage.copyImage(this.m_imgBuffer);
+    this.m_wrapImage.copyImage(this.m_trgModel.ImageBuffer);
     this.m_imgCanvas.AddDirtyRect(new Int32Rect(0, 0, 300, 300));
     this.m_imgCanvas.Unlock();
 }
@@ -225,7 +226,7 @@ executeCommand(
         System.IProgress<int>   progress)
 {
     for ( int i = 1; i <= 100; ++ i ) {
-        drawSampleImage();
+        this.m_trgModel.drawSampleImage();
         progress.Report(i);
         System.Threading.Thread.Sleep(10);
     }
@@ -238,6 +239,8 @@ executeCommand(
 //
 //    Member Variables.
 //
+
+private  readonly   MySampleModel               m_trgModel;
 
 private  SampleWrapper.Images.FullColorImage    m_wrapImage;
 private  SampleWrapper.Images.FullColorImage    m_imgBuffer;

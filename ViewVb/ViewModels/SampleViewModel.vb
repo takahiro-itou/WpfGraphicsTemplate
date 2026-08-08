@@ -28,7 +28,13 @@ Namespace Global.ViewVb.ViewModels
 Public Class SampleViewModel
         Implements INotifyPropertyChanged
 
-Private m_imgBuffer As SampleWrapper.Images.FullColorImage
+''======================================================================
+''
+''    Member Variables.
+''
+
+Private ReadOnly m_trgModel As MySampleModel
+
 Private m_wrapImage As SampleWrapper.Images.FullColorImage
 Private m_imgCanvas As WriteableBitmap
 
@@ -39,31 +45,37 @@ Private ReadOnly m_runModelTaskCommand As SimpleCommand
 Private m_isRunning As Boolean
 
 
+''======================================================================
+''
+''    Constructor(s) and Destructor.
+''
+
 Public Sub New()
 ''--------------------------------------------------------------------
 ''    コンストラクタ
 ''--------------------------------------------------------------------
+Dim nWidth  As Integer = 300
+Dim nHeight As Integer = 300
+Dim cbPixel As Integer = 4
+Dim lStride As Integer
+
 Dim ptrBuf As IntPtr
 Dim imgCanvas As WriteableBitmap
 
     imgCanvas = New WriteableBitmap(
-            300, 300, 96, 96, Media.PixelFormats.Pbgra32, Nothing)
+            nWidth, nHeight, 96, 96, Media.PixelFormats.Pbgra32, Nothing)
     Me.m_wrapImage  = New SampleWrapper.Images.FullColorImage()
-    Me.m_imgBuffer  = New SampleWrapper.Images.FullColorImage()
 
     imgCanvas.Lock()
-    ptrBuf = imgCanvas.BackBuffer
-    Me.m_wrapImage.createImage(
-            300, 300,
-            (imgCanvas.Format.BitsPerPixel + 7) \ 8,
-            imgCanvas.BackBufferStride, ptrBuf)
-    imgCanvas.Unlock()
-    Me.m_imgCanvas = imgCanvas
+    cbPixel = (imgCanvas.Format.BitsPerPixel + 7) \ 8
+    lStride = imgCanvas.BackBufferStride
 
-    Me.m_imgBuffer.allocateImage(
-            300, 300,
-            (imgCanvas.Format.BitsPerPixel + 7) \ 8,
-            imgCanvas.BackBufferStride)
+    ptrBuf = imgCanvas.BackBuffer
+    Me.m_wrapImage.createImage(nWidth, nHeight, cbPixel, lStride, ptrBuf)
+    imgCanvas.Unlock()
+
+    Me.m_imgCanvas  = imgCanvas
+    Me.m_trgModel   = New MySampleModel(nWidth, nHeight, cbPixel, lStride)
 
     Me.m_runModelTaskCommand = New SimpleCommand(
         Sub(ByVal parameter As Object)
@@ -179,35 +191,10 @@ Protected Overridable Sub updateProgress(
 
     With Me.m_imgCanvas
         .Lock()
-        Me.m_wrapImage.copyImage(Me.m_imgBuffer)
+        Me.m_wrapImage.copyImage(Me.m_trgModel.ImageBuffer)
         .AddDirtyRect(new Int32Rect(0, 0, 300, 300))
         .Unlock()
     End With
-End Sub
-
-
-Protected Overridable Sub drawSampleImage()
-''--------------------------------------------------------------------
-''    サンプル画像を描画する。
-''--------------------------------------------------------------------
-Dim colBG As Integer
-Dim colTL As Integer
-Dim colTR As Integer
-Dim colBL As Integer
-Dim colBR As Integer
-Dim rnd As New Random()
-
-    ' 色を適当に決める。背景はある程度明るい色
-    colBG = rnd.Next(16777216) Or &HFF808080
-
-    ' 色を適当に決める。
-    colTL = rnd.Next(256) Or &HFF000080
-    colTR = (rnd.Next(256) * 256) OR &HFF008000
-    colBL = rnd.Next(256)
-    colBL = (colBL * 257) Or &HFF008080
-    colBR = (rnd.Next(256) * 65536) OR &HFF800000
-
-    Me.m_imgBuffer.drawSample(colBG, colTL, colTR, colBL, colBR)
 End Sub
 
 
@@ -219,7 +206,7 @@ Public Overridable Function executeCommand(
 Dim i As Integer
 
     For i = 1 To 100
-        drawSampleImage()
+        Me.m_trgModel.drawSampleImage()
         progress.Report(i)
         System.Threading.Thread.Sleep(10)
     Next i
