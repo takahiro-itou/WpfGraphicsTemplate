@@ -28,7 +28,7 @@ Namespace Global.ViewVb.ViewModels
 Public Class SampleViewModel
         Implements INotifyPropertyChanged
 
-Privare m_imgBuffer As SampleWrapper.Images.FullColorImage
+Private m_imgBuffer As SampleWrapper.Images.FullColorImage
 Private m_wrapImage As SampleWrapper.Images.FullColorImage
 Private m_imgCanvas As WriteableBitmap
 
