@@ -35,7 +35,7 @@ Public Class SimpleCommand(Of T)
 Private  ReadOnly  m_execute    As Action(Of T)
 Private  ReadOnly  m_canExecute As Predicate(Of Object)
 
-Private  Shared    s_typeConverter As TyepConverter  _
+Private  Shared    s_typeConverter As TypeConverter  _
     = TypeDescriptor.GetConverter(GetType(T))
 
 
