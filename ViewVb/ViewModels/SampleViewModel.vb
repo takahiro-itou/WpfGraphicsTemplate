@@ -19,6 +19,8 @@ Imports System.Windows
 Imports System.Windows.Input
 Imports System.Windows.Media.Imaging
 
+Imports FullColorImage = SampleWrapper.Images.FullColorImage
+
 Imports ViewVb.Commands
 Imports ViewVb.Models
 
@@ -35,12 +37,13 @@ Public Class SampleViewModel
 
 Private ReadOnly m_trgModel As MySampleModel
 
-Private m_wrapImage As SampleWrapper.Images.FullColorImage
-Private m_bmpCanvas As WriteableBitmap
+Private ReadOnly m_mainImage As FullColorImage
 
 Private ReadOnly m_progress As System.IProgress(Of Integer)
 
 Private ReadOnly m_runModelTaskCommand As SimpleCommand
+
+Private m_bmpCanvas As WriteableBitmap
 
 Private m_isRunning As Boolean
 
@@ -64,7 +67,7 @@ Dim bmpCanvas As WriteableBitmap
 
     bmpCanvas = New WriteableBitmap(
             nWidth, nHeight, 96, 96, Media.PixelFormats.Pbgra32, Nothing)
-    Me.m_wrapImage  = New SampleWrapper.Images.FullColorImage()
+    Me.m_mainImage  = New FullColorImage()
 
     With bmpCanvas
         .Lock()
@@ -72,7 +75,7 @@ Dim bmpCanvas As WriteableBitmap
         lStride = .BackBufferStride
 
         ptrBuf = .BackBuffer
-        Me.m_wrapImage.createImage(nWidth, nHeight, cbPixel, lStride, ptrBuf)
+        Me.m_mainImage.createImage(nWidth, nHeight, cbPixel, lStride, ptrBuf)
         .Unlock()
     End With
 
@@ -193,7 +196,7 @@ Protected Overridable Sub updateProgress(
 
     With Me.m_bmpCanvas
         .Lock()
-        Me.m_wrapImage.copyImage(Me.m_trgModel.ImageBuffer)
+        Me.m_mainImage.copyImage(Me.m_trgModel.ImageBuffer)
         .AddDirtyRect(New Int32Rect(0, 0, 300, 300))
         .Unlock()
     End With

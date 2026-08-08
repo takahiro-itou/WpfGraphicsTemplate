@@ -21,6 +21,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
+using FullColorImage = SampleWrapper.Images.FullColorImage;
+
 using ViewCs.Commands;
 using ViewCs.Models;
 
@@ -52,14 +54,14 @@ public SampleViewModel()
     bmpCanvas = new WriteableBitmap(
             nWidth, nHeight, 96, 96,
             PixelFormats.Pbgra32, null);
-    m_wrapImage = new SampleWrapper.Images.FullColorImage();
+    this.m_mainImage = new FullColorImage();
 
     bmpCanvas.Lock();
     cbPixel = (bmpCanvas.Format.BitsPerPixel + 7) >> 3;
     lStride = bmpCanvas.BackBufferStride;
 
     ptrBuf  = bmpCanvas.BackBuffer;
-    this.m_wrapImage.createImage(nWidth, nHeight, cbPixel, lStride, ptrBuf);
+    this.m_mainImage.createImage(nWidth, nHeight, cbPixel, lStride, ptrBuf);
     bmpCanvas.Unlock();
 
     this.m_bmpCanvas = bmpCanvas;
@@ -186,34 +188,9 @@ protected  virtual  void
 updateProgress(int progressValue)
 {
     this.m_bmpCanvas.Lock();
-    this.m_wrapImage.copyImage(this.m_trgModel.ImageBuffer);
+    this.m_mainImage.copyImage(this.m_trgModel.ImageBuffer);
     this.m_bmpCanvas.AddDirtyRect(new Int32Rect(0, 0, 300, 300));
     this.m_bmpCanvas.Unlock();
-}
-
-//----------------------------------------------------------------
-/**   サンプル画像を描画する。
-**
-**/
-protected  virtual  void
-drawSampleImage()
-{
-    int     cAlpha;
-    int     colBG, colTL, colTR, colBL, colBR;
-    System.Random   rnd = new System.Random();
-
-    //  色を適当に決める。背景はある程度明るい色
-    cAlpha  = 255 << 24;
-    colBG = rnd.Next(16777216) | cAlpha | 0x00808080;
-
-    //  色を適当に決める。
-    colTL = rnd.Next(256) | cAlpha | 0x00000080;
-    colTR = (rnd.Next(256) <<  8) | cAlpha | 0x00008080;
-    colBL = rnd.Next(256);
-    colBL = (colBL | colBL <<  8) | cAlpha | 0x00008080;
-    colBR = (rnd.Next(256) << 16) | cAlpha | 0x00800000;
-
-    this.m_imgBuffer.drawSample(colBG, colTL, colTR, colBL, colBR);
 }
 
 //----------------------------------------------------------------
@@ -242,15 +219,15 @@ executeCommand(
 
 private  readonly   MySampleModel               m_trgModel;
 
-private  SampleWrapper.Images.FullColorImage    m_wrapImage;
-
-private  WriteableBitmap                        m_bmpCanvas;
+private  readonly   FullColorImage              m_mainImage;
 
 private  readonly   System.IProgress<int>       m_progress;
 
 private  readonly   SimpleCommand               m_runModelTaskCommand;
 
-private  bool   m_isRunning;
+private  WriteableBitmap    m_bmpCanvas;
+
+private  bool               m_isRunning;
 
 
 }   //  End class  SampleViewModel
