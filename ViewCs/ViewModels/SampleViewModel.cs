@@ -48,6 +48,7 @@ public SampleViewModel()
             300, 300, 96, 96,
             PixelFormats.Pbgra32, null);
     m_wrapImage = new SampleWrapper.Images.FullColorImage();
+    m_imgBuffer = new SampleWrapper.Images.FullColorImage();
 
     imgCanvas.Lock();
     ptrBuf  = imgCanvas.BackBuffer;
@@ -57,6 +58,11 @@ public SampleViewModel()
             imgCanvas.BackBufferStride, ptrBuf);
     imgCanvas.Unlock();
     m_imgCanvas = imgCanvas;
+
+    this.m_imgBuffer.allocateImage(
+            300, 300,
+            (imgCanvas.Format.BitsPerPixel + 7) / 8,
+            imgCanvas.BackBufferStride);
 
     this.m_runModelTaskCommand = new SimpleCommand(
         _ => this.runModelTaskAsync(),
@@ -178,6 +184,19 @@ raisePropertyChanged(
 protected  virtual  void
 updateProgress(int progressValue)
 {
+    this.m_imgCanvas.Lock();
+    this.m_wrapImage.copyImage(this.m_imgBuffer);
+    this.m_imgCanvas.AddDirtyRect(new Int32Rect(0, 0, 300, 300));
+    this.m_imgCanvas.Unlock();
+}
+
+//----------------------------------------------------------------
+/**   サンプル画像を描画する。
+**
+**/
+protected  virtual  void
+drawSampleImage()
+{
     int     cAlpha;
     int     colBG, colTL, colTR, colBL, colBR;
     System.Random   rnd = new System.Random();
@@ -193,10 +212,7 @@ updateProgress(int progressValue)
     colBL = (colBL | colBL <<  8) | cAlpha | 0x00008080;
     colBR = (rnd.Next(256) << 16) | cAlpha | 0x00800000;
 
-    this.m_imgCanvas.Lock();
-    this.m_wrapImage.drawSample(colBG, colTL, colTR, colBL, colBR);
-    this.m_imgCanvas.AddDirtyRect(new Int32Rect(0, 0, 300, 300));
-    this.m_imgCanvas.Unlock();
+    this.m_imgBuffer.drawSample(colBG, colTL, colTR, colBL, colBR);
 }
 
 //----------------------------------------------------------------
@@ -223,6 +239,8 @@ executeCommand(
 //
 
 private  SampleWrapper.Images.FullColorImage    m_wrapImage;
+private  SampleWrapper.Images.FullColorImage    m_imgBuffer;
+
 private  WriteableBitmap                        m_imgCanvas;
 
 private  readonly   System.IProgress<int>       m_progress;
