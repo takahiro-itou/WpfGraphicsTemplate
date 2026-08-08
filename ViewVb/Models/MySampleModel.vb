@@ -1,37 +1,60 @@
-
-Imports WpfControl.Sample
+﻿''  -*-  coding: utf-8-with-signature  -*-  ''
+''************************************************************************
+''                                                                      ''
+''                  ---   Graphics Test Project.   ---                  ''
+''                                                                      ''
+''          Copyright (C), 2025-2026, Takahiro Itou                     ''
+''          All Rights Reserved.                                        ''
+''                                                                      ''
+''          License: (See COPYING or LICENSE files)                     ''
+''          GNU Affero General Public License (AGPL) version 3,         ''
+''          or (at your option) any later version.                      ''
+''                                                                      ''
+''************************************************************************
 
 
 Namespace Global.ViewVb.Models
 
 Public Class MySampleModel
-        Inherits WpfControl.Sample.AbstractSampleModel
 
-Public Overrides Sub executeCommand()
+Private m_imgBuffer As SampleWrapper.Images.FullColorImage
+
+
+Public Sub New(
+        ByVal nWidth As Integer,
+        ByVal nHeight As Integer,
+        ByVal cbPixel As Integer,
+        ByVal lStride As Integer)
 ''--------------------------------------------------------------------
-''    適当な動作を実行する
+''    コンストラクタ
 ''--------------------------------------------------------------------
-    RunCount(Me.InputText)
+    Me.m_imgBuffer  = New SampleWrapper.Images.FullColorImage()
+    Me.m_imgBuffer.allocateImage(nWidth, nHeight, cbPixel, lStride)
 End Sub
 
 
-Private Sub runCount(ByVal message As String)
+Public Overridable Sub drawSampleImage()
 ''--------------------------------------------------------------------
-''    サンプル動作
-''
-''    入力テキスト中のアルファベットの個数を数える
+''    サンプル画像を描画する。
 ''--------------------------------------------------------------------
-Dim result As Integer
-Dim outText As String
-Dim objWrapper As SampleWrapper.Common.SampleDocument
+Dim colBG As Integer
+Dim colTL As Integer
+Dim colTR As Integer
+Dim colBL As Integer
+Dim colBR As Integer
+Dim rnd As New Random()
 
-    objWrapper = New SampleWrapper.Common.SampleDocument()
-    objWrapper.setMessage(message)
-    result = objWrapper.countAlphabet()
+    ' 色を適当に決める。背景はある程度明るい色
+    colBG = rnd.Next(16777216) Or &HFF808080
 
-    outText = "入力した文字列中のアルファベットの個数は " & result
-    Me.setOutputText(outText)
-    MsgBox(outText, MsgBoxStyle.OkOnly)
+    ' 色を適当に決める。
+    colTL = rnd.Next(256) Or &HFF000080
+    colTR = (rnd.Next(256) * 256) OR &HFF008000
+    colBL = rnd.Next(256)
+    colBL = (colBL * 257) Or &HFF008080
+    colBR = (rnd.Next(256) * 65536) OR &HFF800000
+
+    Me.m_imgBuffer.drawSample(colBG, colTL, colTR, colBL, colBR)
 End Sub
 
 
