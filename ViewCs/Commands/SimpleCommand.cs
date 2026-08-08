@@ -68,7 +68,10 @@ CanExecute(object? parameter)
 public  void
 Execute(object? parameter)
 {
-    this.m_execute((T)parameter);
+    T tparam = (parameter is T)
+        ? (T)parameter
+        : (T)s_typeConverter.ConvertFrom(parameter);
+    this.m_execute(tparam);
 }
 
 
@@ -110,6 +113,9 @@ private  readonly   Action<T>               m_execute;
 
 /**   実行可否の判定。  **/
 private  readonly   Predicate<object?>?     m_canExecute;
+
+private  static     TypeConverter
+    s_typeConverter = TypeDescriptor.GetConverter(typeof(T));
 
 }   //  End class  SimpleCommand
 
