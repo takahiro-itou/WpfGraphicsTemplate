@@ -1,5 +1,5 @@
 
-msbuild  -restore  -t:Clean      ^
+msbuild  -restore  -t:Clean     ^
     -p:Configuration="Release"  -p:Platform=x64     ^
     SampleView.sln
 
