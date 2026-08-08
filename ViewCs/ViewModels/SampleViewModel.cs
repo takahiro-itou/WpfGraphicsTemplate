@@ -47,22 +47,22 @@ public SampleViewModel()
     int         lStride = 0;
 
     System.IntPtr       ptrBuf;
-    WriteableBitmap     imgCanvas;
+    WriteableBitmap     bmpCanvas;
 
-    imgCanvas = new WriteableBitmap(
+    bmpCanvas = new WriteableBitmap(
             nWidth, nHeight, 96, 96,
             PixelFormats.Pbgra32, null);
     m_wrapImage = new SampleWrapper.Images.FullColorImage();
 
-    imgCanvas.Lock();
-    cbPixel = (imgCanvas.Format.BitsPerPixel + 7) >> 3;
-    lStride = imgCanvas.BackBufferStride;
+    bmpCanvas.Lock();
+    cbPixel = (bmpCanvas.Format.BitsPerPixel + 7) >> 3;
+    lStride = bmpCanvas.BackBufferStride;
 
-    ptrBuf  = imgCanvas.BackBuffer;
+    ptrBuf  = bmpCanvas.BackBuffer;
     this.m_wrapImage.createImage(nWidth, nHeight, cbPixel, lStride, ptrBuf);
-    imgCanvas.Unlock();
+    bmpCanvas.Unlock();
 
-    this.m_imgCanvas = imgCanvas;
+    this.m_bmpCanvas = bmpCanvas;
     this.m_trgModel = new MySampleModel(nWidth, nHeight, cbPixel, lStride);
 
     this.m_runModelTaskCommand = new SimpleCommand(
@@ -116,7 +116,7 @@ RunModelTaskCommand {
 **/
 public  virtual  WriteableBitmap
 SourceBitmap {
-    get { return  this.m_imgCanvas; }
+    get { return  this.m_bmpCanvas; }
 }
 
 
@@ -185,10 +185,10 @@ raisePropertyChanged(
 protected  virtual  void
 updateProgress(int progressValue)
 {
-    this.m_imgCanvas.Lock();
+    this.m_bmpCanvas.Lock();
     this.m_wrapImage.copyImage(this.m_trgModel.ImageBuffer);
-    this.m_imgCanvas.AddDirtyRect(new Int32Rect(0, 0, 300, 300));
-    this.m_imgCanvas.Unlock();
+    this.m_bmpCanvas.AddDirtyRect(new Int32Rect(0, 0, 300, 300));
+    this.m_bmpCanvas.Unlock();
 }
 
 //----------------------------------------------------------------
@@ -243,9 +243,8 @@ executeCommand(
 private  readonly   MySampleModel               m_trgModel;
 
 private  SampleWrapper.Images.FullColorImage    m_wrapImage;
-private  SampleWrapper.Images.FullColorImage    m_imgBuffer;
 
-private  WriteableBitmap                        m_imgCanvas;
+private  WriteableBitmap                        m_bmpCanvas;
 
 private  readonly   System.IProgress<int>       m_progress;
 

@@ -36,7 +36,7 @@ Public Class SampleViewModel
 Private ReadOnly m_trgModel As MySampleModel
 
 Private m_wrapImage As SampleWrapper.Images.FullColorImage
-Private m_imgCanvas As WriteableBitmap
+Private m_bmpCanvas As WriteableBitmap
 
 Private ReadOnly m_progress As System.IProgress(Of Integer)
 
@@ -60,21 +60,23 @@ Dim cbPixel As Integer = 4
 Dim lStride As Integer
 
 Dim ptrBuf As IntPtr
-Dim imgCanvas As WriteableBitmap
+Dim bmpCanvas As WriteableBitmap
 
-    imgCanvas = New WriteableBitmap(
+    bmpCanvas = New WriteableBitmap(
             nWidth, nHeight, 96, 96, Media.PixelFormats.Pbgra32, Nothing)
     Me.m_wrapImage  = New SampleWrapper.Images.FullColorImage()
 
-    imgCanvas.Lock()
-    cbPixel = (imgCanvas.Format.BitsPerPixel + 7) \ 8
-    lStride = imgCanvas.BackBufferStride
+    With bmpCanvas
+        .Lock()
+        cbPixel = (.Format.BitsPerPixel + 7) \ 8
+        lStride = .BackBufferStride
 
-    ptrBuf = imgCanvas.BackBuffer
-    Me.m_wrapImage.createImage(nWidth, nHeight, cbPixel, lStride, ptrBuf)
-    imgCanvas.Unlock()
+        ptrBuf = .BackBuffer
+        Me.m_wrapImage.createImage(nWidth, nHeight, cbPixel, lStride, ptrBuf)
+        .Unlock()
+    End With
 
-    Me.m_imgCanvas  = imgCanvas
+    Me.m_bmpCanvas  = bmpCanvas
     Me.m_trgModel   = New MySampleModel(nWidth, nHeight, cbPixel, lStride)
 
     Me.m_runModelTaskCommand = New SimpleCommand(
@@ -121,7 +123,7 @@ End Property
 
 Public Overridable Readonly Property SourceBitmap() As WriteableBitmap
     Get
-        Return  Me.m_imgCanvas
+        Return  Me.m_bmpCanvas
     End Get
 End Property
 
@@ -189,7 +191,7 @@ Protected Overridable Sub updateProgress(
 ''    バッファにある画像を画面上に転送する。
 ''--------------------------------------------------------------------
 
-    With Me.m_imgCanvas
+    With Me.m_bmpCanvas
         .Lock()
         Me.m_wrapImage.copyImage(Me.m_trgModel.ImageBuffer)
         .AddDirtyRect(New Int32Rect(0, 0, 300, 300))
