@@ -13,10 +13,16 @@
 ''************************************************************************
 
 Imports System
+Imports System.ComponentModel
 Imports System.Windows.Input
 
 
 Namespace Global.ViewVb.Commands
+
+''========================================================================
+''
+''    SimpleCommand  class.
+''
 
 Public Class SimpleCommand(Of T)
         Implements ICommand
@@ -28,6 +34,9 @@ Public Class SimpleCommand(Of T)
 
 Private  ReadOnly  m_execute    As Action(Of T)
 Private  ReadOnly  m_canExecute As Predicate(Of Object)
+
+Private  Shared    s_typeConverter As TyepConverter  _
+    = TypeDescriptor.GetConverter(GetType(T))
 
 
 ''========================================================================
@@ -58,7 +67,14 @@ End Function
 
 
 Public Sub Execute(parameter As Object) Implements ICommand.Execute
-    Me.m_execute(CType(parameter, T))
+Dim tparam As T
+
+    If TypeOf parameter is T Then
+        tparam = CType(parameter, T)
+    Else
+        tparam = s_typeConverter.ConvertFrom(parameter)
+    End If
+    Me.m_execute(tparam)
 End Sub
 
 
