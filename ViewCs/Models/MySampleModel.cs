@@ -12,6 +12,8 @@
 **                                                                      **
 *************************************************************************/
 
+using FullColorImage = SampleWrapper.Images.FullColorImage;
+
 
 namespace  ViewCs.Models  {
 
@@ -34,7 +36,9 @@ MySampleModel(
         int cbPixel,
         int lStride)
 {
-    m_imgBuffer = new SampleWrapper.Images.FullColorImage();
+    m_imgWidth  = nWidth;
+    m_imgWidth  = nHeight;
+    m_imgBuffer = new FullColorImage();
     this.m_imgBuffer.allocateImage(nWidth, nHeight, cbPixel, lStride);
 }
 
@@ -43,6 +47,17 @@ MySampleModel(
 //
 //    Public Member Functions.
 //
+
+//----------------------------------------------------------------
+/**   画像をクリアする。
+**
+**/
+public  virtual  void
+clearImage(int colBG)
+{
+    this.m_imgBuffer.fillRectangle(
+            0, 0, this.m_imgWidth, this.m_imgHeight, colBG);
+}
 
 //----------------------------------------------------------------
 /**   サンプル画像を描画する。
@@ -80,7 +95,7 @@ drawSampleImage()
 **
 **/
 
-public  SampleWrapper.Images.FullColorImage
+public  FullColorImage
 ImageBuffer {
     get { return  this.m_imgBuffer; }
 }
@@ -91,7 +106,10 @@ ImageBuffer {
 //    Member Variables.
 //
 
-private  SampleWrapper.Images.FullColorImage    m_imgBuffer;
+private  readonly   FullColorImage  m_imgBuffer;
+
+private  readonly   int             m_imgWidth;
+private  readonly   int             m_imgHeight;
 
 
 }   //  End class  MySampleModel

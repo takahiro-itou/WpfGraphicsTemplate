@@ -12,6 +12,8 @@
 ''                                                                      ''
 ''************************************************************************
 
+Imports FullColorImage = SampleWrapper.Images.FullColorImage
+
 
 Namespace Global.ViewVb.Models
 
@@ -22,7 +24,10 @@ Public Class MySampleModel
 ''    Member Variables.
 ''
 
-Private m_imgBuffer As SampleWrapper.Images.FullColorImage
+Private  ReadOnly   m_imgBuffer As FullColorImage
+
+Private  ReadOnly   m_imgWidth  As Integer
+Private  ReadOnly   m_imgHeight As Integer
 
 
 ''======================================================================
@@ -38,7 +43,10 @@ Public Sub New(
 ''--------------------------------------------------------------------
 ''    コンストラクタ
 ''--------------------------------------------------------------------
-    Me.m_imgBuffer  = New SampleWrapper.Images.FullColorImage()
+    m_imgWidth  = nWidth
+    m_imgHeight = nHeight
+
+    m_imgBuffer = New FullColorImage()
     Me.m_imgBuffer.allocateImage(nWidth, nHeight, cbPixel, lStride)
 End Sub
 
@@ -47,6 +55,14 @@ End Sub
 ''
 ''    Public Member Functions.
 ''
+
+Public Overridable Sub clearImage(ByVal colBG As Integer)
+''--------------------------------------------------------------------
+''    画像をクリアする。
+''--------------------------------------------------------------------
+    Me.m_imgBuffer.fillRectangle(0, 0, Me.m_imgWidth, Me.m_imgHeight, colBG)
+End Sub
+
 
 Public Overridable Sub drawSampleImage()
 ''--------------------------------------------------------------------
@@ -81,8 +97,7 @@ End Sub
 ''--------------------------------------------------------------------
 ''    イメージバッファを取得するプロパティ。
 ''--------------------------------------------------------------------
-Public  ReadOnly  Property  _
-ImageBuffer() As SampleWrapper.Images.FullColorImage
+Public  ReadOnly  Property  ImageBuffer() As FullColorImage
     Get
         Return  Me.m_imgBuffer
     End Get
