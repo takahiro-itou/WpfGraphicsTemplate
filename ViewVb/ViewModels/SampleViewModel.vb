@@ -192,7 +192,7 @@ Protected Overridable Sub updateProgress(
     With Me.m_imgCanvas
         .Lock()
         Me.m_wrapImage.copyImage(Me.m_trgModel.ImageBuffer)
-        .AddDirtyRect(new Int32Rect(0, 0, 300, 300))
+        .AddDirtyRect(New Int32Rect(0, 0, 300, 300))
         .Unlock()
     End With
 End Sub

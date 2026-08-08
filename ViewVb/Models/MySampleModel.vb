@@ -81,7 +81,8 @@ End Sub
 ''--------------------------------------------------------------------
 ''    イメージバッファを取得するプロパティ。
 ''--------------------------------------------------------------------
-public  Property  ImageBuffer() As SampleWrapper.Images.FullColorImage
+Public  ReadOnly  Property  _
+ImageBuffer() As SampleWrapper.Images.FullColorImage
     Get
         Return  Me.m_imgBuffer
     End Get

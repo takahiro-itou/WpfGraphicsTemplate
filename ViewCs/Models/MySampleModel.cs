@@ -32,7 +32,7 @@ MySampleModel(
         int nWidth,
         int nHeight,
         int cbPixel,
-        int lStride
+        int lStride)
 {
     m_imgBuffer = new SampleWrapper.Images.FullColorImage();
     this.m_imgBuffer.allocateImage(nWidth, nHeight, cbPixel, lStride);
