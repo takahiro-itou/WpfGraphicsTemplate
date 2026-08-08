@@ -225,6 +225,7 @@ executeCommand(
         System.IProgress<int>   progress)
 {
     for ( int i = 1; i <= 100; ++ i ) {
+        drawSampleImage();
         progress.Report(i);
         System.Threading.Thread.Sleep(10);
     }
