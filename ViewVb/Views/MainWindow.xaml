@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:ViewVb"
-    xmlns:WpfControl="clr-namespace:WpfControl;assembly=WpfControl"
     xmlns:WpfControl.Sample="clr-namespace:WpfControl.Sample;assembly=WpfControl"
     Title="MainWindow"
     Height="512" Width="440"
@@ -20,10 +19,22 @@
         <MenuItem Header="E_xit" Click="mnuFileExit_Click" />
       </MenuItem>
       <MenuItem Header="_Bitmap">
-        <MenuItem Header="_Draw"
+        <MenuItem Header="Draw 16"
             Command="{Binding RunModelTaskCommand}"
+            CommandParameter="16"
         />
-        <MenuItem Header="_Clear" />
+        <MenuItem Header="_Draw 100"
+            Command="{Binding RunModelTaskCommand}"
+            CommandParameter="100"
+        />
+        <MenuItem Header="Clear _Black"
+            Command="{Binding ClearImageCommand}"
+            CommandParameter="0xFF000000"
+        />
+        <MenuItem Header="Clear _White"
+            Command="{Binding ClearImageCommand}"
+            CommandParameter="0xFFFFFFFF"
+        />
       </MenuItem>
     </Menu>
 

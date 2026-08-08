@@ -37,7 +37,7 @@ MySampleModel(
         int lStride)
 {
     m_imgWidth  = nWidth;
-    m_imgWidth  = nHeight;
+    m_imgHeight = nHeight;
     m_imgBuffer = new FullColorImage();
     this.m_imgBuffer.allocateImage(nWidth, nHeight, cbPixel, lStride);
 }

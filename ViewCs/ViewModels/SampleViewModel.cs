@@ -1,4 +1,4 @@
-﻿//  -*-  coding: utf-8-with-signature;  mode: c++  -*-  //
+﻿//  -*-  coding: utf-8-with-signature  -*-  //
 /*************************************************************************
 **                                                                      **
 **                  ---   Graphics Test Project.   ---                  **
@@ -21,10 +21,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-using FullColorImage = SampleWrapper.Images.FullColorImage;
 
 using ViewCs.Commands;
 using ViewCs.Models;
+
+
+using FullColorImage = SampleWrapper.Images.FullColorImage;
 
 
 namespace  ViewCs.ViewModels  {
@@ -67,9 +69,12 @@ public SampleViewModel()
     this.m_bmpCanvas = bmpCanvas;
     this.m_trgModel = new MySampleModel(nWidth, nHeight, cbPixel, lStride);
 
-    this.m_runModelTaskCommand = new SimpleCommand(
-        _ => this.runModelTaskAsync(),
+    this.m_runModelTaskCommand  = new SimpleCommand<int>(
+        parameter => this.runModelTaskAsync(parameter),
         _ => this.canRunTask()
+    );
+    this.m_clearImageCommand    = new SimpleCommand<int>(
+        parameter => this.m_trgModel.clearImage(parameter)
     );
 
     this.m_progress  = new System.Progress<int>(updateProgress);
@@ -142,7 +147,7 @@ canRunTask()
 **
 **/
 public  virtual  async  void
-runModelTaskAsync()
+runModelTaskAsync(int parameter)
 {
     this.IsRunning  = true;
 
@@ -223,7 +228,8 @@ private  readonly   FullColorImage              m_mainImage;
 
 private  readonly   System.IProgress<int>       m_progress;
 
-private  readonly   SimpleCommand               m_runModelTaskCommand;
+private  readonly   SimpleCommand<int>          m_runModelTaskCommand;
+private  readonly   SimpleCommand<int>          m_clearImageCommand;
 
 private  WriteableBitmap    m_bmpCanvas;
 

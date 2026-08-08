@@ -18,15 +18,25 @@ Imports System.Windows.Input
 
 Namespace Global.ViewVb.Commands
 
-Public Class SimpleCommand
+Public Class SimpleCommand(Of T)
         Implements ICommand
 
-Private ReadOnly   m_execute As Action(Of Object)
-Private ReadOnly   m_canExecute As Predicate(Of Object)
+''========================================================================
+''
+''    Member Variables.
+''
 
+Private  ReadOnly  m_execute    As Action(Of T)
+Private  ReadOnly  m_canExecute As Predicate(Of Object)
+
+
+''========================================================================
+''
+''    Constructor(s) and Destructor.
+''
 
 Public Sub New(
-        execute As Action(Of Object),
+        execute As Action(Of T),
         Optional canExecute As Predicate(Of Object) = Nothing)
 ''--------------------------------------------------------------------
 ''    コンストラクタ
@@ -36,6 +46,11 @@ Public Sub New(
 End Sub
 
 
+''========================================================================
+''
+''    Public Member Functions (Implement Interface).
+''
+
 Public Function CanExecute(parameter As Object) As Boolean _
         Implements ICommand.CanExecute
     Return If(m_canExecute Is Nothing, True, m_canExecute(parameter))
@@ -43,13 +58,23 @@ End Function
 
 
 Public Sub Execute(parameter As Object) Implements ICommand.Execute
-    Me.m_execute(parameter)
+    Me.m_execute(CType(parameter, T))
 End Sub
 
+
+''========================================================================
+''
+''    Public Events (Implement Interface).
+''
 
 Public Event CanExecuteChanged As EventHandler _
         Implements ICommand.CanExecuteChanged
 
+
+''========================================================================
+''
+''    Public Member Functions.
+''
 
 Public Sub raiseCanExecuteChanged()
     RaiseEvent CanExecuteChanged(Me, EventArgs.Empty)

@@ -35,13 +35,14 @@ Public Class SampleViewModel
 ''    Member Variables.
 ''
 
-Private ReadOnly m_trgModel As MySampleModel
+Private  ReadOnly   m_trgModel As MySampleModel
 
-Private ReadOnly m_mainImage As FullColorImage
+Private  ReadOnly   m_mainImage As FullColorImage
 
-Private ReadOnly m_progress As System.IProgress(Of Integer)
+Private  ReadOnly   m_progress As System.IProgress(Of Integer)
 
-Private ReadOnly m_runModelTaskCommand As SimpleCommand
+Private  ReadOnly   m_runModelTaskCommand As SimpleCommand(Of Integer)
+Private  ReadOnly   m_clearImageCommand   As SimpleCommand(Of Integer)
 
 Private m_bmpCanvas As WriteableBitmap
 
@@ -82,13 +83,18 @@ Dim bmpCanvas As WriteableBitmap
     Me.m_bmpCanvas  = bmpCanvas
     Me.m_trgModel   = New MySampleModel(nWidth, nHeight, cbPixel, lStride)
 
-    Me.m_runModelTaskCommand = New SimpleCommand(
-        Sub(ByVal parameter As Object)
-            Me.runModelTaskAsync
+    Me.m_runModelTaskCommand = New SimpleCommand(Of Integer)(
+        Sub(ByVal parameter As Integer)
+            Me.runModelTaskAsync(parameter)
         End Sub,
         Function(ByVal parameter As Object) As Boolean
             Return  Me.canRunTask()
         End Function
+    )
+    Me.m_clearImageCommand  = New SimpleCommand(Of Integer)(
+        Sub(ByVal parameter As Integer)
+            Me.m_trgModel.clearImage(parameter)
+        End Sub
     )
 
     Me.m_progress = New System.Progress(Of Integer)(AddressOf updateProgress)
@@ -114,6 +120,13 @@ Public Property IsRunning() As Boolean
         raisePropertyChanged()
         raiseCanExecuteChanged()
     End Set
+End Property
+
+
+Public Overridable ReadOnly Property ClearImageCommand() As ICommand
+    Get
+        Return  Me.m_clearImageCommand
+    End Get
 End Property
 
 
@@ -144,7 +157,7 @@ Public Overridable Function canRunTask() As Boolean
 End Function
 
 
-Public Overridable Async Sub runModelTaskAsync()
+Public Overridable Async Sub runModelTaskAsync(ByVal parameter As Integer)
 ''--------------------------------------------------------------------
 ''    モデルのタスクを非同期で実行する。
 ''--------------------------------------------------------------------
