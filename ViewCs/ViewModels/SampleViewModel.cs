@@ -209,8 +209,8 @@ executeCommand(
         System.IProgress<int>   progress,
         int                     parameter)
 {
-    const  int  interval = 1000 / parameter;
-    const  int  count    = parameter;
+    int  interval = 2000 / parameter;
+    int  count    = parameter;
 
     for ( int i = 1; i <= count; ++ i ) {
         this.m_trgModel.drawSampleImage();

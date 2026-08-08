@@ -226,7 +226,7 @@ Dim i As Integer
 Dim interval As Integer
 Dim count As Integer
 
-    interval = 1000 / parameter
+    interval = 2000 / parameter
     count    = parameter
 
     For i = 1 To count

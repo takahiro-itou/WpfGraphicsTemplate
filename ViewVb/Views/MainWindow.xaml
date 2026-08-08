@@ -19,13 +19,17 @@
         <MenuItem Header="E_xit" Click="mnuFileExit_Click" />
       </MenuItem>
       <MenuItem Header="_Bitmap">
+        <MenuItem Header="_Draw 100"
+            Command="{Binding RunModelTaskCommand}"
+            CommandParameter="100"
+        />
         <MenuItem Header="Draw 16"
             Command="{Binding RunModelTaskCommand}"
             CommandParameter="16"
         />
-        <MenuItem Header="_Draw 100"
+        <MenuItem Header="Draw 5"
             Command="{Binding RunModelTaskCommand}"
-            CommandParameter="100"
+            CommandParameter="5"
         />
         <MenuItem Header="Clear _Black"
             Command="{Binding ClearImageCommand}"
