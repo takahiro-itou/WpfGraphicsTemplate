@@ -36,4 +36,8 @@
     <Compile Include="WinAPI.vb" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+  </ItemGroup>
+
 </Project>
