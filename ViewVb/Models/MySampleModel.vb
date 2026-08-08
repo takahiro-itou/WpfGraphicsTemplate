@@ -17,8 +17,18 @@ Namespace Global.ViewVb.Models
 
 Public Class MySampleModel
 
+''======================================================================
+''
+''    Member Variables.
+''
+
 Private m_imgBuffer As SampleWrapper.Images.FullColorImage
 
+
+''======================================================================
+''
+''    Constructor(s) and Destructor.
+''
 
 Public Sub New(
         ByVal nWidth As Integer,
@@ -32,6 +42,11 @@ Public Sub New(
     Me.m_imgBuffer.allocateImage(nWidth, nHeight, cbPixel, lStride)
 End Sub
 
+
+''======================================================================
+''
+''    Public Member Functions.
+''
 
 Public Overridable Sub drawSampleImage()
 ''--------------------------------------------------------------------
@@ -56,6 +71,20 @@ Dim rnd As New Random()
 
     Me.m_imgBuffer.drawSample(colBG, colTL, colTR, colBL, colBR)
 End Sub
+
+''======================================================================
+''
+''    Properties.
+''
+
+''--------------------------------------------------------------------
+''    イメージバッファを取得するプロパティ。
+''--------------------------------------------------------------------
+public  Property  ImageBuffer() As SampleWrapper.Images.FullColorImage
+    Get
+        Return  Me.m_imgBuffer
+    End Get
+End Property
 
 
 End Class

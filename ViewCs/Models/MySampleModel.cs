@@ -27,7 +27,8 @@ public  class  MySampleModel
 /**   コンストラクタ。
 **
 **/
-public  MySampleModel(
+public
+MySampleModel(
         int nWidth,
         int nHeight,
         int cbPixel,
@@ -65,6 +66,22 @@ drawSampleImage()
     colBR = (rnd.Next(256) << 16) | cAlpha | 0x00800000;
 
     this.m_imgBuffer.drawSample(colBG, colTL, colTR, colBL, colBR);
+}
+
+
+//========================================================================
+//
+//    Properties.
+//
+
+//----------------------------------------------------------------
+/**   イメージバッファを取得するプロパティ。
+**
+**/
+
+public  SampleWrapper.Images.FullColorImage
+ImageBuffer {
+    get { return  this.m_imgBuffer; }
 }
 
 
