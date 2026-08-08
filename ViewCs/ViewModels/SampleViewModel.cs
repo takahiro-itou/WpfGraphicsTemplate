@@ -152,7 +152,8 @@ runModelTaskAsync(int parameter)
     this.IsRunning  = true;
 
     Task<int>  task = Task.Run<int>(
-        () => this.executeCommand(this.m_progress));
+        () => this.executeCommand(this.m_progress, parameter)
+    );
     int  result = await task;
 
     this.IsRunning  = false;
@@ -205,12 +206,16 @@ updateProgress(int progressValue)
 
 public  virtual  int
 executeCommand(
-        System.IProgress<int>   progress)
+        System.IProgress<int>   progress,
+        int                     parameter)
 {
-    for ( int i = 1; i <= 100; ++ i ) {
+    const  int  interval = 1000 / parameter;
+    const  int  count    = parameter;
+
+    for ( int i = 1; i <= count; ++ i ) {
         this.m_trgModel.drawSampleImage();
         progress.Report(i);
-        System.Threading.Thread.Sleep(10);
+        System.Threading.Thread.Sleep(interval);
     }
 
     return ( 0 );

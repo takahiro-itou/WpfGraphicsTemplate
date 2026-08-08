@@ -168,7 +168,7 @@ Dim myTask As Task(Of Integer)
 
     mytask = Task.Run(Of Integer)(
         Function() As Integer
-            Return  executeCommand(Me.m_progress)
+            Return  executeCommand(Me.m_progress, parameter)
         End Function
     )
     result  = await mytask
@@ -217,16 +217,22 @@ End Sub
 
 
 Public Overridable Function executeCommand(
-        ByVal progress As IProgress(Of Integer) ) As Integer
+        ByVal progress As IProgress(Of Integer),
+        ByVal parameter As Integer) As Integer
 ''--------------------------------------------------------------------
 ''    モデルのタスクを実行する。
 ''--------------------------------------------------------------------
 Dim i As Integer
+Dim interval As Integer
+Dim count As Integer
 
-    For i = 1 To 100
+    interval = 1000 / parameter
+    count    = parameter
+
+    For i = 1 To count
         Me.m_trgModel.drawSampleImage()
         progress.Report(i)
-        System.Threading.Thread.Sleep(10)
+        System.Threading.Thread.Sleep(interval)
     Next i
 
     executeCommand = 0
