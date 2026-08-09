@@ -19,6 +19,8 @@ Imports System.Windows
 Imports System.Windows.Input
 Imports System.Windows.Media.Imaging
 
+Imports FullColorImage = SampleWrapper.Images.FullColorImage
+
 Imports ViewVb.Commands
 Imports ViewVb.Models
 
@@ -28,50 +30,71 @@ Namespace Global.ViewVb.ViewModels
 Public Class SampleViewModel
         Implements INotifyPropertyChanged
 
-Private m_imgBuffer As SampleWrapper.Images.FullColorImage
-Private m_wrapImage As SampleWrapper.Images.FullColorImage
-Private m_imgCanvas As WriteableBitmap
+''======================================================================
+''
+''    Member Variables.
+''
 
-Private ReadOnly m_progress As System.IProgress(Of Integer)
+Private  ReadOnly   m_trgModel As MySampleModel
 
-Private ReadOnly m_runModelTaskCommand As SimpleCommand
+Private  ReadOnly   m_mainImage As FullColorImage
+
+Private  ReadOnly   m_progress As System.IProgress(Of Integer)
+
+Private  ReadOnly   m_runModelTaskCommand As SimpleCommand(Of Integer)
+Private  ReadOnly   m_clearImageCommand   As SimpleCommand(Of Integer)
+
+Private m_bmpCanvas As WriteableBitmap
 
 Private m_isRunning As Boolean
 
+
+''======================================================================
+''
+''    Constructor(s) and Destructor.
+''
 
 Public Sub New()
 ''--------------------------------------------------------------------
 ''    コンストラクタ
 ''--------------------------------------------------------------------
+Dim nWidth  As Integer = 300
+Dim nHeight As Integer = 300
+Dim cbPixel As Integer = 4
+Dim lStride As Integer
+
 Dim ptrBuf As IntPtr
-Dim imgCanvas As WriteableBitmap
+Dim bmpCanvas As WriteableBitmap
 
-    imgCanvas = New WriteableBitmap(
-            300, 300, 96, 96, Media.PixelFormats.Pbgra32, Nothing)
-    Me.m_wrapImage  = New SampleWrapper.Images.FullColorImage()
-    Me.m_imgBuffer  = New SampleWrapper.Images.FullColorImage()
+    bmpCanvas = New WriteableBitmap(
+            nWidth, nHeight, 96, 96, Media.PixelFormats.Pbgra32, Nothing)
+    Me.m_mainImage  = New FullColorImage()
 
-    imgCanvas.Lock()
-    ptrBuf = imgCanvas.BackBuffer
-    Me.m_wrapImage.createImage(
-            300, 300,
-            (imgCanvas.Format.BitsPerPixel + 7) \ 8,
-            imgCanvas.BackBufferStride, ptrBuf)
-    imgCanvas.Unlock()
-    Me.m_imgCanvas = imgCanvas
+    With bmpCanvas
+        .Lock()
+        cbPixel = (.Format.BitsPerPixel + 7) \ 8
+        lStride = .BackBufferStride
 
-    Me.m_imgBuffer.allocateImage(
-            300, 300,
-            (imgCanvas.Format.BitsPerPixel + 7) \ 8,
-            imgCanvas.BackBufferStride)
+        ptrBuf = .BackBuffer
+        Me.m_mainImage.createImage(nWidth, nHeight, cbPixel, lStride, ptrBuf)
+        .Unlock()
+    End With
 
-    Me.m_runModelTaskCommand = New SimpleCommand(
-        Sub(ByVal parameter As Object)
-            Me.runModelTaskAsync
+    Me.m_bmpCanvas  = bmpCanvas
+    Me.m_trgModel   = New MySampleModel(nWidth, nHeight, cbPixel, lStride)
+
+    Me.m_runModelTaskCommand = New SimpleCommand(Of Integer)(
+        Sub(ByVal parameter As Integer)
+            Me.runModelTaskAsync(parameter)
         End Sub,
         Function(ByVal parameter As Object) As Boolean
             Return  Me.canRunTask()
         End Function
+    )
+    Me.m_clearImageCommand  = New SimpleCommand(Of Integer)(
+        Sub(ByVal parameter As Integer)
+            Me.m_trgModel.clearImage(parameter)
+        End Sub
     )
 
     Me.m_progress = New System.Progress(Of Integer)(AddressOf updateProgress)
@@ -100,6 +123,13 @@ Public Property IsRunning() As Boolean
 End Property
 
 
+Public Overridable ReadOnly Property ClearImageCommand() As ICommand
+    Get
+        Return  Me.m_clearImageCommand
+    End Get
+End Property
+
+
 Public Overridable ReadOnly Property RunModelTaskCommand() As ICommand
     Get
         Return  Me.m_runModelTaskCommand
@@ -109,7 +139,7 @@ End Property
 
 Public Overridable Readonly Property SourceBitmap() As WriteableBitmap
     Get
-        Return  Me.m_imgCanvas
+        Return  Me.m_bmpCanvas
     End Get
 End Property
 
@@ -127,7 +157,7 @@ Public Overridable Function canRunTask() As Boolean
 End Function
 
 
-Public Overridable Async Sub runModelTaskAsync()
+Public Overridable Async Sub runModelTaskAsync(ByVal parameter As Integer)
 ''--------------------------------------------------------------------
 ''    モデルのタスクを非同期で実行する。
 ''--------------------------------------------------------------------
@@ -138,7 +168,7 @@ Dim myTask As Task(Of Integer)
 
     mytask = Task.Run(Of Integer)(
         Function() As Integer
-            Return  executeCommand(Me.m_progress)
+            Return  executeCommand(Me.m_progress, parameter)
         End Function
     )
     result  = await mytask
@@ -177,51 +207,32 @@ Protected Overridable Sub updateProgress(
 ''    バッファにある画像を画面上に転送する。
 ''--------------------------------------------------------------------
 
-    With Me.m_imgCanvas
+    With Me.m_bmpCanvas
         .Lock()
-        Me.m_wrapImage.copyImage(Me.m_imgBuffer)
-        .AddDirtyRect(new Int32Rect(0, 0, 300, 300))
+        Me.m_mainImage.copyImage(Me.m_trgModel.ImageBuffer)
+        .AddDirtyRect(New Int32Rect(0, 0, 300, 300))
         .Unlock()
     End With
 End Sub
 
 
-Protected Overridable Sub drawSampleImage()
-''--------------------------------------------------------------------
-''    サンプル画像を描画する。
-''--------------------------------------------------------------------
-Dim colBG As Integer
-Dim colTL As Integer
-Dim colTR As Integer
-Dim colBL As Integer
-Dim colBR As Integer
-Dim rnd As New Random()
-
-    ' 色を適当に決める。背景はある程度明るい色
-    colBG = rnd.Next(16777216) Or &HFF808080
-
-    ' 色を適当に決める。
-    colTL = rnd.Next(256) Or &HFF000080
-    colTR = (rnd.Next(256) * 256) OR &HFF008000
-    colBL = rnd.Next(256)
-    colBL = (colBL * 257) Or &HFF008080
-    colBR = (rnd.Next(256) * 65536) OR &HFF800000
-
-    Me.m_imgBuffer.drawSample(colBG, colTL, colTR, colBL, colBR)
-End Sub
-
-
 Public Overridable Function executeCommand(
-        ByVal progress As IProgress(Of Integer) ) As Integer
+        ByVal progress As IProgress(Of Integer),
+        ByVal parameter As Integer) As Integer
 ''--------------------------------------------------------------------
 ''    モデルのタスクを実行する。
 ''--------------------------------------------------------------------
 Dim i As Integer
+Dim interval As Integer
+Dim count As Integer
 
-    For i = 1 To 100
-        drawSampleImage()
+    interval = 2000 / parameter
+    count    = parameter
+
+    For i = 1 To count
+        Me.m_trgModel.drawSampleImage()
         progress.Report(i)
-        System.Threading.Thread.Sleep(10)
+        System.Threading.Thread.Sleep(interval)
     Next i
 
     executeCommand = 0
