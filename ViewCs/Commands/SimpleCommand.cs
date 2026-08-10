@@ -24,7 +24,7 @@ namespace  ViewCs.Commands  {
 //    SimpleCommand  class.
 //
 
-public  class  SimpleCommand : ICommand
+public  class  SimpleCommand<T> : ICommand
 {
 
 //========================================================================
@@ -32,18 +32,18 @@ public  class  SimpleCommand : ICommand
 //    Constructor(s) and Destructor.
 //
 
-    //----------------------------------------------------------------
-    /**   コンストラクタ。
-    **
-    **/
-    public SimpleCommand(
-            Action<object?>     execute,
-            Predicate<object?>? canExecute = null)
-    {
-        this.m_execute  = execute ?? throw new ArgumentNullException(
-                nameof(execute));
-        this.m_canExecute = canExecute;
-    }
+//----------------------------------------------------------------
+/**   コンストラクタ。
+**
+**/
+public SimpleCommand(
+        Action<T>           execute,
+        Predicate<object?>? canExecute = null)
+{
+    this.m_execute  = execute ?? throw new ArgumentNullException(
+            nameof(execute));
+    this.m_canExecute = canExecute;
+}
 
 
 //========================================================================
@@ -51,43 +51,56 @@ public  class  SimpleCommand : ICommand
 //    Public Member Functions (Implement Interface).
 //
 
-//========================================================================
-//
-//    Public Properties (Implement Interface).
-//
+//----------------------------------------------------------------
+/**   コマンドが実行可能か否かを返す。
+**
+**/
+public  bool
+CanExecute(object? parameter)
+{
+    return ( this.m_canExecute?.Invoke(parameter) ?? true );
+}
 
-    //----------------------------------------------------------------
-    /**   コマンドが実行可能か否かを返す。
-    **
-    **/
-    public bool CanExecute(object? parameter)
-        => this.m_canExecute?.Invoke(parameter) ?? true;
-
-    //----------------------------------------------------------------
-    /**
-    **
-    **/
-    public void Execute(object? parameter)
-        => this.m_execute(parameter);
-
-    //----------------------------------------------------------------
-    /**
-    **
-    **/
-    public event EventHandler?  CanExecuteChanged;
+//----------------------------------------------------------------
+/**
+**
+**/
+public  void
+Execute(object? parameter)
+{
+    T tparam = (parameter is T)
+        ? (T)parameter
+        : (T)s_typeConverter.ConvertFrom(parameter);
+    this.m_execute(tparam);
+}
 
 
 //========================================================================
 //
-//    Public Member Functions (Implement Interface).
+//    Public Events (Implement Interface).
 //
 
-    //----------------------------------------------------------------
-    /**   CanExecuteChanged イベントを発生させる。
-    **
-    **/
-    public void RaiseCanExecuteChanged()
-        => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+//----------------------------------------------------------------
+/**
+**
+**/
+public  event   EventHandler?   CanExecuteChanged;
+
+
+//========================================================================
+//
+//    Public Member Functions.
+//
+
+//----------------------------------------------------------------
+/**   CanExecuteChanged イベントを発生させる。
+**
+**/
+public  void
+RaiseCanExecuteChanged()
+{
+    CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+}
 
 
 //========================================================================
@@ -95,11 +108,14 @@ public  class  SimpleCommand : ICommand
 //    Member Variables.
 //
 
-    /**   実行する内容。    **/
-    private readonly  Action<object?>       m_execute;
+/**   実行する内容。    **/
+private  readonly   Action<T>               m_execute;
 
-    /**   実行可否の判定。  **/
-    private readonly  Predicate<object?>?   m_canExecute;
+/**   実行可否の判定。  **/
+private  readonly   Predicate<object?>?     m_canExecute;
+
+private  static     TypeConverter
+    s_typeConverter = TypeDescriptor.GetConverter(typeof(T));
 
 }   //  End class  SimpleCommand
 

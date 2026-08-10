@@ -1,50 +1,117 @@
+﻿//  -*-  coding: utf-8-with-signature;  mode: c++  -*-  //
+/*************************************************************************
+**                                                                      **
+**                  ---   Graphics Test Project.   ---                  **
+**                                                                      **
+**          Copyright (C), 2025-2026, Takahiro Itou                     **
+**          All Rights Reserved.                                        **
+**                                                                      **
+**          License: (See COPYING or LICENSE files)                     **
+**          GNU Affero General Public License (AGPL) version 3,         **
+**          or (at your option) any later version.                      **
+**                                                                      **
+*************************************************************************/
 
-using System.Windows;
-
-using WpfControl.Sample;
+using FullColorImage = SampleWrapper.Images.FullColorImage;
 
 
 namespace  ViewCs.Models  {
 
-public  class  MySampleModel : WpfControl.Sample.AbstractSampleModel
+public  class  MySampleModel
 {
 
-    //----------------------------------------------------------------
-    /**   適当な動作を実行する。
-    **
-    **/
-    public  override  void
-    executeCommand()
-    {
-        runCount(this.InputText);
-    }
+//========================================================================
+//
+//    Constructor(s) and Destructor.
+//
 
-    //----------------------------------------------------------------
-    /**   サンプル動作。
-    **
-    **    入力テキスト中のアルファベットの個数を数える。
-    **/
-    private  void
-    runCount(
-            string  message)
-    {
-        int result;
-        string  outText;
-        SampleWrapper.Common.SampleDocument objWrapper;
-
-        objWrapper = new SampleWrapper.Common.SampleDocument();
-        objWrapper.setMessage(message);
-        result = objWrapper.countAlphabet();
-
-        outText = $"入力した文字列中のアルファベットの個数は {result}";
-        this.setOutputText(outText);
-        MessageBox.Show(
-                outText, "Sample",
-                MessageBoxButton.OK,
-                MessageBoxImage.Asterisk);
-        return;
-    }
-
+//----------------------------------------------------------------
+/**   コンストラクタ。
+**
+**/
+public
+MySampleModel(
+        int nWidth,
+        int nHeight,
+        int cbPixel,
+        int lStride)
+{
+    m_imgWidth  = nWidth;
+    m_imgHeight = nHeight;
+    m_imgBuffer = new FullColorImage();
+    this.m_imgBuffer.allocateImage(nWidth, nHeight, cbPixel, lStride);
 }
+
+
+//========================================================================
+//
+//    Public Member Functions.
+//
+
+//----------------------------------------------------------------
+/**   画像をクリアする。
+**
+**/
+public  virtual  void
+clearImage(int colBG)
+{
+    this.m_imgBuffer.fillRectangle(
+            0, 0, this.m_imgWidth, this.m_imgHeight, colBG);
+}
+
+//----------------------------------------------------------------
+/**   サンプル画像を描画する。
+**
+**/
+public  virtual  void
+drawSampleImage()
+{
+    int     cAlpha;
+    int     colBG, colTL, colTR, colBL, colBR;
+    System.Random   rnd = new System.Random();
+
+    //  色を適当に決める。背景はある程度明るい色
+    cAlpha  = 255 << 24;
+    colBG = rnd.Next(16777216) | cAlpha | 0x00808080;
+
+    //  色を適当に決める。
+    colTL = rnd.Next(256) | cAlpha | 0x00000080;
+    colTR = (rnd.Next(256) <<  8) | cAlpha | 0x00008080;
+    colBL = rnd.Next(256);
+    colBL = (colBL | colBL <<  8) | cAlpha | 0x00008080;
+    colBR = (rnd.Next(256) << 16) | cAlpha | 0x00800000;
+
+    this.m_imgBuffer.drawSample(colBG, colTL, colTR, colBL, colBR);
+}
+
+
+//========================================================================
+//
+//    Properties.
+//
+
+//----------------------------------------------------------------
+/**   イメージバッファを取得するプロパティ。
+**
+**/
+
+public  FullColorImage
+ImageBuffer {
+    get { return  this.m_imgBuffer; }
+}
+
+
+//========================================================================
+//
+//    Member Variables.
+//
+
+private  readonly   FullColorImage  m_imgBuffer;
+
+private  readonly   int             m_imgWidth;
+private  readonly   int             m_imgHeight;
+
+
+}   //  End class  MySampleModel
 
 }   //  End of namespace  ViewCs.Models

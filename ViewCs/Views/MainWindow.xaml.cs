@@ -14,7 +14,6 @@
 
 using System;
 using System.Windows;
-using System.Windows.Media.Imaging;
 
 
 namespace  ViewCs.Views  {
@@ -22,29 +21,35 @@ namespace  ViewCs.Views  {
 public  partial class  MainWindow : Window
 {
 
-    //----------------------------------------------------------------
-    /**   デフォルトコンストラクタ。
-    **
-    **/
-    public  MainWindow()
-    {
-        InitializeComponent();
+//----------------------------------------------------------------
+/**   デフォルトコンストラクタ。
+**
+**/
+public  MainWindow()
+{
+    InitializeComponent();
 
-        this.m_viewModel = new ViewModels.SampleViewModel();
-        this.DataContext = this.m_viewModel;
-    }
-
-    //----------------------------------------------------------------
-    /**
-    **
-    **/
-    private  void  mnuFileExit_Click(object sender, EventArgs e)
-    {
-        System.Windows.Application.Current.Shutdown();
-    }
-
-    private ViewModels.SampleViewModel  m_viewModel;
-
+    this.m_viewModel = new ViewModels.SampleViewModel();
+    this.DataContext = this.m_viewModel;
 }
+
+//----------------------------------------------------------------
+/**
+**
+**/
+private  void  mnuFileExit_Click(object sender, EventArgs e)
+{
+    System.Windows.Application.Current.Shutdown();
+}
+
+
+//========================================================================
+//
+//    Member Variables.
+//
+
+private ViewModels.SampleViewModel  m_viewModel;
+
+}   //  End class  MainWindow
 
 }   //  End of namespace  ViewCs.Views

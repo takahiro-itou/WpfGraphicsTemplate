@@ -1,4 +1,4 @@
-﻿//  -*-  coding: utf-8-with-signature;  mode: c++  -*-  //
+﻿//  -*-  coding: utf-8-with-signature  -*-  //
 /*************************************************************************
 **                                                                      **
 **                  ---   Graphics Test Project.   ---                  **
@@ -21,8 +21,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
+
 using ViewCs.Commands;
 using ViewCs.Models;
+
+
+using FullColorImage = SampleWrapper.Images.FullColorImage;
 
 
 namespace  ViewCs.ViewModels  {
@@ -41,26 +45,36 @@ public  class  SampleViewModel : INotifyPropertyChanged
 **/
 public SampleViewModel()
 {
+    const  int  nWidth  = 300;
+    const  int  nHeight = 300;
+    int         cbPixel = 4;
+    int         lStride = 0;
+
     System.IntPtr       ptrBuf;
-    WriteableBitmap     imgCanvas;
+    WriteableBitmap     bmpCanvas;
 
-    imgCanvas = new WriteableBitmap(
-            300, 300, 96, 96,
+    bmpCanvas = new WriteableBitmap(
+            nWidth, nHeight, 96, 96,
             PixelFormats.Pbgra32, null);
-    m_wrapImage = new SampleWrapper.Images.FullColorImage();
+    this.m_mainImage = new FullColorImage();
 
-    imgCanvas.Lock();
-    ptrBuf  = imgCanvas.BackBuffer;
-    this.m_wrapImage.createImage(
-            300, 300,
-            (imgCanvas.Format.BitsPerPixel + 7) / 8,
-            imgCanvas.BackBufferStride, ptrBuf);
-    imgCanvas.Unlock();
-    m_imgCanvas = imgCanvas;
+    bmpCanvas.Lock();
+    cbPixel = (bmpCanvas.Format.BitsPerPixel + 7) >> 3;
+    lStride = bmpCanvas.BackBufferStride;
 
-    this.m_runModelTaskCommand = new SimpleCommand(
-        _ => this.runModelTaskAsync(),
+    ptrBuf  = bmpCanvas.BackBuffer;
+    this.m_mainImage.createImage(nWidth, nHeight, cbPixel, lStride, ptrBuf);
+    bmpCanvas.Unlock();
+
+    this.m_bmpCanvas = bmpCanvas;
+    this.m_trgModel = new MySampleModel(nWidth, nHeight, cbPixel, lStride);
+
+    this.m_runModelTaskCommand  = new SimpleCommand<int>(
+        parameter => this.runModelTaskAsync(parameter),
         _ => this.canRunTask()
+    );
+    this.m_clearImageCommand    = new SimpleCommand<int>(
+        parameter => this.m_trgModel.clearImage(parameter)
     );
 
     this.m_progress  = new System.Progress<int>(updateProgress);
@@ -109,7 +123,7 @@ RunModelTaskCommand {
 **/
 public  virtual  WriteableBitmap
 SourceBitmap {
-    get { return  this.m_imgCanvas; }
+    get { return  this.m_bmpCanvas; }
 }
 
 
@@ -133,12 +147,13 @@ canRunTask()
 **
 **/
 public  virtual  async  void
-runModelTaskAsync()
+runModelTaskAsync(int parameter)
 {
     this.IsRunning  = true;
 
     Task<int>  task = Task.Run<int>(
-        () => this.executeCommand(this.m_progress));
+        () => this.executeCommand(this.m_progress, parameter)
+    );
     int  result = await task;
 
     this.IsRunning  = false;
@@ -178,25 +193,10 @@ raisePropertyChanged(
 protected  virtual  void
 updateProgress(int progressValue)
 {
-    int     cAlpha;
-    int     colBG, colTL, colTR, colBL, colBR;
-    System.Random   rnd = new System.Random();
-
-    //  色を適当に決める。背景はある程度明るい色
-    cAlpha  = 255 << 24;
-    colBG = rnd.Next(16777216) | cAlpha | 0x00808080;
-
-    //  色を適当に決める。
-    colTL = rnd.Next(256) | cAlpha | 0x00000080;
-    colTR = (rnd.Next(256) <<  8) | cAlpha | 0x00008080;
-    colBL = rnd.Next(256);
-    colBL = (colBL | colBL <<  8) | cAlpha | 0x00008080;
-    colBR = (rnd.Next(256) << 16) | cAlpha | 0x00800000;
-
-    this.m_imgCanvas.Lock();
-    this.m_wrapImage.drawSample(colBG, colTL, colTR, colBL, colBR);
-    this.m_imgCanvas.AddDirtyRect(new Int32Rect(0, 0, 300, 300));
-    this.m_imgCanvas.Unlock();
+    this.m_bmpCanvas.Lock();
+    this.m_mainImage.copyImage(this.m_trgModel.ImageBuffer);
+    this.m_bmpCanvas.AddDirtyRect(new Int32Rect(0, 0, 300, 300));
+    this.m_bmpCanvas.Unlock();
 }
 
 //----------------------------------------------------------------
@@ -206,11 +206,16 @@ updateProgress(int progressValue)
 
 public  virtual  int
 executeCommand(
-        System.IProgress<int>   progress)
+        System.IProgress<int>   progress,
+        int                     parameter)
 {
-    for ( int i = 1; i <= 100; ++ i ) {
+    int  interval = 2000 / parameter;
+    int  count    = parameter;
+
+    for ( int i = 1; i <= count; ++ i ) {
+        this.m_trgModel.drawSampleImage();
         progress.Report(i);
-        System.Threading.Thread.Sleep(10);
+        System.Threading.Thread.Sleep(interval);
     }
 
     return ( 0 );
@@ -222,14 +227,18 @@ executeCommand(
 //    Member Variables.
 //
 
-private  SampleWrapper.Images.FullColorImage    m_wrapImage;
-private  WriteableBitmap                        m_imgCanvas;
+private  readonly   MySampleModel               m_trgModel;
+
+private  readonly   FullColorImage              m_mainImage;
 
 private  readonly   System.IProgress<int>       m_progress;
 
-private  readonly   SimpleCommand               m_runModelTaskCommand;
+private  readonly   SimpleCommand<int>          m_runModelTaskCommand;
+private  readonly   SimpleCommand<int>          m_clearImageCommand;
 
-private  bool   m_isRunning;
+private  WriteableBitmap    m_bmpCanvas;
+
+private  bool               m_isRunning;
 
 
 }   //  End class  SampleViewModel
