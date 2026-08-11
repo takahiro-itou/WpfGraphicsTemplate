@@ -1,6 +1,6 @@
 
 set  solution=SampleView
-set  target=Clean
+set  target=Build
 
 
 msbuild  -restore  -t:%target%  ^
