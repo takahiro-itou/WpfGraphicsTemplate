@@ -1,8 +1,12 @@
 
+set  solution=SampleView
+set  config="Debug"
+
+
 msbuild  -restore  -t:Clean     ^
-    -p:Configuration="Release"  -p:Platform=x64     ^
-    SampleView.NetOld.sln
+    -p:Configuration=%config%   -p:Platform=x64     ^
+    "%solution%.NetOld.sln"
 
 msbuild  -restore  -t:Rebuild   ^
-    -p:Configuration="Release"  -p:Platform=x64     ^
-    SampleView.NetOld.sln
+    -p:Configuration=%config%   -p:Platform=x64     ^
+    "%solution%.NetOld.sln"
