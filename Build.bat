@@ -1,6 +1,6 @@
 
 set  solution=SampleView
-set  config="Debug"
+set  config="Release"
 
 
 msbuild  -restore  -t:Build     ^
